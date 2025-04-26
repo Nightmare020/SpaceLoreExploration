@@ -13,6 +13,8 @@ struct InputCommands
 	bool rotRight;
 	bool rotLeft;
 	bool generate;
+	bool moveUp;
+	bool moveDown;
 };
 
 

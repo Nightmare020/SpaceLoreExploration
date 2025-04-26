@@ -53,6 +53,14 @@ void Input::Update()
 	if (kb.S)	m_GameInput.back = true;
 	else		m_GameInput.back = false;
 
+	// Q key
+	if (kb.Q)	m_GameInput.moveUp = true;
+	else		m_GameInput.moveUp = false;
+
+	// E key
+	if (kb.E)	m_GameInput.moveDown = true;
+	else		m_GameInput.moveDown = false;
+
 	//space
 	if (kb.Space) m_GameInput.generate = true;
 	else		m_GameInput.generate = false;
