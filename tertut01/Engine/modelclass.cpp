@@ -21,7 +21,28 @@ bool ModelClass::InitializeModel(ID3D11Device *device, char* filename)
 {
 	LoadModel(filename);
 	InitializeBuffers(device);
-	return false;
+
+	// After initialising buffers, load diffuse texture if a material was found
+	if (!m_diffuseTextureFilename.empty())
+	{
+		std::wstring wideTextureName(m_diffuseTextureFilename.begin(), 
+			m_diffuseTextureFilename.end());
+
+		// Try loading the etxture
+		HRESULT hr = CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_diffuseTexture.ReleaseAndGetAddressOf());
+
+		if (FAILED(hr))
+		{
+			OutputDebugStringA("Failed to load model texture! \n");
+		}
+	}
+
+	return true;
+}
+
+ID3D11ShaderResourceView* ModelClass::GetTexture()
+{
+	return m_diffuseTexture.Get();
 }
 
 bool ModelClass::InitializeTeapot(ID3D11Device* device)
@@ -89,6 +110,12 @@ void ModelClass::Shutdown()
 
 void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
+	// Bind the textures to pixel shader before drawing (if exists)
+	if (m_diffuseTexture)
+	{
+		deviceContext->PSSetShaderResources(0, 1, m_diffuseTexture.GetAddressOf());
+	}
+
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 	deviceContext->DrawIndexed(m_indexCount, 0, 0);
@@ -293,8 +320,13 @@ bool ModelClass::LoadModel(char* filename)
 				{
 					faces.push_back(face[i]);
 				}
-
-
+			}
+			// Handle mtllib entry to load the material file
+			else if (strcmp(lineHeader, "mtllib") == 0)
+			{
+				char materialFile[128];
+				fscanf_s(file, "%s\n", materialFile, sizeof(materialFile));
+				LoadMaterial(materialFile);
 			}
 		}
 	}
@@ -309,8 +341,48 @@ bool ModelClass::LoadModel(char* filename)
 	// "Unroll" the loaded obj information into a list of triangles.
 	for (int f = 0; f < (int)faces.size(); f += 3)
 	{
+		int vertexIndex = faces[f + 0];
+		int texCoordIndex = faces[f + 1];
+		int normalIndex = faces[f + 2];
+
 		VertexPositionNormalTexture tempVertex;
-		tempVertex.position.x = verts[(faces[f + 0] - 1)].x;
+
+		// - Vertex
+		tempVertex.position.x = verts[vertexIndex - 1].x;
+		tempVertex.position.y = verts[vertexIndex - 1].y;
+		tempVertex.position.z = verts[vertexIndex - 1].z;
+
+		// - Texcoord
+		if (!texCs.empty())
+		{
+			tempVertex.textureCoordinate.x = texCs[texCoordIndex - 1].x;
+			tempVertex.textureCoordinate.y = 1.0f - texCs[texCoordIndex - 1].y;
+		}
+		else
+		{
+			tempVertex.textureCoordinate.x = 0.0f;
+			tempVertex.textureCoordinate.y = 0.0f;
+		}
+
+		// - Normal
+		if (!norms.empty())
+		{
+			tempVertex.normal.x = norms[normalIndex - 1].x;
+			tempVertex.normal.y = norms[normalIndex - 1].y;
+			tempVertex.normal.z = norms[normalIndex - 1].z;
+		}
+		else
+		{
+			tempVertex.normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		}
+
+		// Add the vertex
+		preFabVertices.push_back(tempVertex);
+		preFabIndices.push_back(vIndex);
+		vIndex++;
+
+		// Oversimplified vertex data assignment
+		/*tempVertex.position.x = verts[(faces[f + 0] - 1)].x;
 		tempVertex.position.y = verts[(faces[f + 0] - 1)].y;
 		tempVertex.position.z = verts[(faces[f + 0] - 1)].z;
 
@@ -319,15 +391,7 @@ bool ModelClass::LoadModel(char* filename)
 			
 		tempVertex.normal.x = norms[(faces[f + 2] - 1)].x;
 		tempVertex.normal.y = norms[(faces[f + 2] - 1)].y;
-		tempVertex.normal.z = norms[(faces[f + 2] - 1)].z;
-
-		//increase index count
-		preFabVertices.push_back(tempVertex);
-		
-		int tempIndex;
-		tempIndex = vIndex;
-		preFabIndices.push_back(tempIndex);
-		vIndex++;
+		tempVertex.normal.z = norms[(faces[f + 2] - 1)].z;*/
 	}
 
 	m_indexCount = vIndex;
@@ -343,4 +407,37 @@ bool ModelClass::LoadModel(char* filename)
 void ModelClass::ReleaseModel()
 {
 	return;
+}
+
+bool ModelClass::LoadMaterial(char* filename)
+{
+	// Load the material file
+	FILE* file;
+	errno_t err;
+	err = fopen_s(&file, filename, "r");
+	if (err != 0)
+	{
+		return false;
+	}
+
+	char line[256];
+	while (fgets(line, sizeof(line), file))
+	{
+		if (strncmp(line, "map_Kd", 6) == 0)
+		{
+			std::string strLine(line);
+			size_t pos = strLine.find_first_not_of(" \t", 6); // after 'map_Kd'
+
+			if (pos != std::string::npos)
+			{
+				std::string texturePath = strLine.substr(pos);
+				texturePath.erase(std::remove(texturePath.begin(), texturePath.end(), '\n'), texturePath.end());
+				texturePath.erase(std::remove(texturePath.begin(), texturePath.end(), '\r'), texturePath.end());
+				m_diffuseTextureFilename = texturePath;
+			}
+			break;
+		}
+	}
+	fclose(file);
+	return true;
 }

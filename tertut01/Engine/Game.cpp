@@ -163,6 +163,18 @@ void Game::Update(DX::StepTimer const& timer)
 		position -= (m_Camera01.getForward()*m_Camera01.getMoveSpeed()); //add the forward vector
 		m_Camera01.setPosition(position);
 	}
+	if (m_gameInputCommands.moveUp)
+	{
+		Vector3 position = m_Camera01.getPosition(); //get the position
+		position.y += m_Camera01.getMoveSpeed(); //add the forward vector
+		m_Camera01.setPosition(position);
+	}
+	if (m_gameInputCommands.moveDown)
+	{
+		Vector3 position = m_Camera01.getPosition(); //get the position
+		position.y -= m_Camera01.getMoveSpeed(); //add the forward vector
+		m_Camera01.setPosition(position);
+	}
 
 	if (m_gameInputCommands.generate)
 	{
@@ -228,27 +240,20 @@ void Game::Render()
 	auto renderTargetView = m_deviceResources->GetRenderTargetView();
 	auto depthTargetView = m_deviceResources->GetDepthStencilView();
 
-    // Draw Text to the screen
-    m_sprites->Begin();
-		m_font->DrawString(m_sprites.get(), L"Procedural Methods", XMFLOAT2(10, 10), Colors::Yellow);
-    m_sprites->End();
-
 	//Set Rendering states. 
 	context->OMSetBlendState(m_states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 	context->RSSetState(m_states->CullClockwise());
 //	context->RSSetState(m_states->Wireframe());
 
-	//prepare transform for floor object. 
-	m_world = SimpleMath::Matrix::Identity; //set world back to identity
-	SimpleMath::Matrix newPosition3 = SimpleMath::Matrix::CreateTranslation(0.0f, -0.6f, 0.0f);
-	SimpleMath::Matrix newScale = SimpleMath::Matrix::CreateScale(0.1);		//scale the terrain down a little. 
-	m_world = m_world * newScale *newPosition3;
+	
 
 	//setup and draw cube
 	m_BasicShaderPair.EnableShader(context);
-	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_texture1.Get());
-	m_Terrain.Render(context);
+	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture());
+
+    //draw spaceship
+	m_SpaceShipModel.Render(context);
 	
 	//render our GUI
 	ImGui::Render();
@@ -364,16 +369,22 @@ void Game::CreateDeviceDependentResources()
 	m_BasicModel2.InitializeModel(device,"drone.obj");
 	m_BasicModel3.InitializeBox(device, 10.0f, 0.1f, 10.0f);	//box includes dimensions
 
+    //setup spaceship model
+	m_SpaceShipModel.InitializeModel(device, "spaceship.obj");
+
 	//load and set up our Vertex and Pixel Shaders
 	m_BasicShaderPair.InitStandard(device, L"light_vs.cso", L"light_ps.cso");
 
 	//load Textures
-	CreateDDSTextureFromFile(device, L"seafloor.dds",		nullptr,	m_texture1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"EvilDrone_Diff.dds", nullptr,	m_texture2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Base_color.dds",	nullptr,	m_texture1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Roughness.dds",		nullptr,	m_texture2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Emissive.dds",		nullptr,	m_texture3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Metallic.dds",		nullptr,	m_texture4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Mixed_AO.dds",		nullptr,	m_texture5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Normal_DirectX.dds",nullptr,	m_texture6.ReleaseAndGetAddressOf());
 
 	//Initialise Render to texture
 	m_FirstRenderPass = new RenderTexture(device, 800, 600, 1, 2);	//for our rendering, We dont use the last two properties. but.  they cant be zero and they cant be the same. 
-
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.

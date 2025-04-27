@@ -41,7 +41,7 @@ public:
 	void Render(ID3D11DeviceContext*);
 	
 	int GetIndexCount();
-
+	ID3D11ShaderResourceView* GetTexture();
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
@@ -51,6 +51,9 @@ private:
 
 	void ReleaseModel();
 
+	// Load material (.mtl) file
+	bool LoadMaterial(char*);
+
 private:
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount;
@@ -59,6 +62,11 @@ private:
 	std::vector<VertexPositionNormalTexture> preFabVertices;
 	std::vector<uint16_t> preFabIndices;
 
+	// Diffuse texture filename loaded from .mtl file
+	std::string m_diffuseTextureFilename;
+
+	// Diffuse texture resource
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_diffuseTexture;
 };
 
 #endif

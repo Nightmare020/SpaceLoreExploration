@@ -14,7 +14,13 @@ public:
 	//we could extend this to load in only a vertex shader, only a pixel shader etc.  or specialised init for Geometry or domain shader. 
 	//All the methods here simply create new versions corresponding to your needs
 	bool InitStandard(ID3D11Device * device, WCHAR * vsFilename, WCHAR * psFilename);		//Loads the Vert / pixel Shader pair
-	bool SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleMath::Matrix  *world, DirectX::SimpleMath::Matrix  *view, DirectX::SimpleMath::Matrix  *projection, Light *sceneLight1, ID3D11ShaderResourceView* texture1);
+	bool SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleMath::Matrix  *world, DirectX::SimpleMath::Matrix  *view, DirectX::SimpleMath::Matrix  *projection, Light *sceneLight1, 
+		ID3D11ShaderResourceView* texture1,
+		ID3D11ShaderResourceView* texture2 = nullptr,
+		ID3D11ShaderResourceView* texture3 = nullptr,
+		ID3D11ShaderResourceView* texture4 = nullptr,
+		ID3D11ShaderResourceView* texture5 = nullptr,
+		ID3D11ShaderResourceView* texture6 = nullptr);
 	void EnableShader(ID3D11DeviceContext * context);
 
 private:

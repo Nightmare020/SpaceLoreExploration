@@ -94,6 +94,10 @@ private:
 	//textures 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture1;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture2;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture3;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture4;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture5;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture6;
 
 	//Shaders
 	Shader																	m_BasicShaderPair;
@@ -103,6 +107,7 @@ private:
 	ModelClass																m_BasicModel;
 	ModelClass																m_BasicModel2;
 	ModelClass																m_BasicModel3;
+	ModelClass																m_SpaceShipModel;
 
 	//RenderTextures
 	RenderTexture*															m_FirstRenderPass;

@@ -2,13 +2,17 @@
 # www.blender.org
 
 newmtl Material.003
-Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ni 1.450000
 d 1.000000
 illum 2
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
 map_Kd C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/textures/Material.001_Base_color.jpg
-map_Ns C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/source/Texture/StarShip2/Material.001_Roughness.jpg
-map_refl C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/source/Texture/StarShip2/Material.001_Metallic.jpg
+map_Pm C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/source/Texture/StarShip2/Material.001_Metallic.jpg
+map_Pr C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/source/Texture/StarShip2/Material.001_Roughness.jpg
 map_Ke C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/textures/Material.001_Emissive.jpg
 map_Bump -bm 1.000000 C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/Assets/spaceship/source/Texture/StarShip2/Material.001_Normal_DirectX.jpg
