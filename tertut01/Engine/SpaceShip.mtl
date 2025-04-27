@@ -12,7 +12,7 @@ Pcr 0.030000
 aniso 0.000000
 anisor 0.000000
 map_Kd Material.001_Base_color.dds
-map_Pm Material.001_Metallic.jpg
-map_Pr Material.001_Roughness.jpg
-map_Ke Material.001_Emissive.jpg
-map_Bump -bm 1.000000 Material.001_Normal_DirectX.jpg
+map_Pm Material.001_Metallic.dds
+map_Pr Material.001_Roughness.dds
+map_Ke Material.001_Emissive.dds
+map_Bump -bm 1.000000 Material.001_Normal_DirectX.dds

@@ -185,7 +185,6 @@
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StepTimer.h" />
-    <ClInclude Include="Terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
@@ -209,7 +208,6 @@
     </ClCompile>
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

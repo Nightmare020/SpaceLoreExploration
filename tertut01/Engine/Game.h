@@ -11,7 +11,6 @@
 #include "Input.h"
 #include "Camera.h"
 #include "RenderTexture.h"
-#include "Terrain.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -103,7 +102,6 @@ private:
 	Shader																	m_BasicShaderPair;
 
 	//Scene. 
-	Terrain																	m_Terrain;
 	ModelClass																m_BasicModel;
 	ModelClass																m_BasicModel2;
 	ModelClass																m_BasicModel3;

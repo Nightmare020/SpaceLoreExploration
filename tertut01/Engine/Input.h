@@ -11,10 +11,11 @@ struct InputCommands
 	bool right;
 	bool left;
 	bool rotRight;
-	bool rotLeft;
-	bool generate;
+	bool rotLeft;	
 	bool moveUp;
 	bool moveDown;
+	bool rightMouseDown;
+	bool startGame;
 };
 
 

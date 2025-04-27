@@ -141,15 +141,15 @@ void Game::Update(DX::StepTimer const& timer)
 	//note that currently.  Delta-time is not considered in the game object movement. 
 	if (m_gameInputCommands.left)
 	{
-		Vector3 rotation = m_Camera01.getRotation();
-		rotation.y = rotation.y += m_Camera01.getRotationSpeed();
-		m_Camera01.setRotation(rotation);
+		Vector3 position = m_Camera01.getPosition();
+		position += m_Camera01.getRight() * m_Camera01.getMoveSpeed();
+		m_Camera01.setPosition(position);
 	}
 	if (m_gameInputCommands.right)
 	{
-		Vector3 rotation = m_Camera01.getRotation();
-		rotation.y = rotation.y -= m_Camera01.getRotationSpeed();
-		m_Camera01.setRotation(rotation);
+		Vector3 position = m_Camera01.getPosition();
+		position -= m_Camera01.getRight() * m_Camera01.getMoveSpeed();
+		m_Camera01.setPosition(position);
 	}
 	if (m_gameInputCommands.forward)
 	{
@@ -176,13 +176,7 @@ void Game::Update(DX::StepTimer const& timer)
 		m_Camera01.setPosition(position);
 	}
 
-	if (m_gameInputCommands.generate)
-	{
-		m_Terrain.GenerateHeightMap(device);
-	}
-
 	m_Camera01.Update();	//camera update.
-	m_Terrain.Update();		//terrain update.  doesnt do anything at the moment. 
 
 	m_view = m_Camera01.getCameraMatrix();
 	m_world = Matrix::Identity;
@@ -361,9 +355,6 @@ void Game::CreateDeviceDependentResources()
     m_font = std::make_unique<SpriteFont>(device, L"SegoeUI_18.spritefont");
 	m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 
-	//setup our terrain
-	m_Terrain.Initialize(device, 128, 128);
-
 	//setup our test model
 	m_BasicModel.InitializeSphere(device);
 	m_BasicModel2.InitializeModel(device,"drone.obj");
@@ -417,9 +408,8 @@ void Game::SetupGUI()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("Sin Wave Parameters");
-		ImGui::SliderFloat("Wave Amplitude",	m_Terrain.GetAmplitude(), 0.0f, 10.0f);
-		ImGui::SliderFloat("Wavelength",		m_Terrain.GetWavelength(), 0.0f, 1.0f);
+	ImGui::Begin("Planetary System Parameters");
+
 	ImGui::End();
 }
 

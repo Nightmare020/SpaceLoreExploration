@@ -23,6 +23,9 @@ void Input::Initialise(HWND window)
 	m_GameInput.left		= false;
 	m_GameInput.rotRight	= false;
 	m_GameInput.rotLeft		= false;
+	m_GameInput.moveUp		= false;
+	m_GameInput.moveDown	= false;
+	m_GameInput.startGame	= false;
 }
 
 void Input::Update()
@@ -61,9 +64,19 @@ void Input::Update()
 	if (kb.E)	m_GameInput.moveDown = true;
 	else		m_GameInput.moveDown = false;
 
-	//space
-	if (kb.Space) m_GameInput.generate = true;
-	else		m_GameInput.generate = false;
+	//start game
+	if (kb.Tab) m_GameInput.startGame = true;
+	else		m_GameInput.startGame = false;
+
+	//mouse button
+	if (m_MouseTracker.rightButton == DirectX::Mouse::ButtonStateTracker::PRESSED)
+	{
+		m_GameInput.rightMouseDown = true;
+	}
+	else if (m_MouseTracker.rightButton == DirectX::Mouse::ButtonStateTracker::RELEASED)
+	{
+		m_GameInput.rightMouseDown = false;
+	}
 }
 
 bool Input::Quit()

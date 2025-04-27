@@ -22,19 +22,53 @@ bool ModelClass::InitializeModel(ID3D11Device *device, char* filename)
 	LoadModel(filename);
 	InitializeBuffers(device);
 
-	// After initialising buffers, load diffuse texture if a material was found
+	// After initialising buffers, load textures if a material was found
 	if (!m_diffuseTextureFilename.empty())
 	{
-		std::wstring wideTextureName(m_diffuseTextureFilename.begin(), 
-			m_diffuseTextureFilename.end());
+		std::wstring wideTextureName(m_diffuseTextureFilename.begin(), m_diffuseTextureFilename.end());
+		
+		// Load the texture
+		CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_diffuseTexture.ReleaseAndGetAddressOf());
+	}
 
-		// Try loading the etxture
-		HRESULT hr = CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_diffuseTexture.ReleaseAndGetAddressOf());
+	if (!m_roughnessTextureFilename.empty())
+	{
+		std::wstring wideTextureName(m_roughnessTextureFilename.begin(), m_roughnessTextureFilename.end());
 
-		if (FAILED(hr))
-		{
-			OutputDebugStringA("Failed to load model texture! \n");
-		}
+		// Load the texture
+		CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_roughnessTexture.ReleaseAndGetAddressOf());
+	}
+
+	if (!m_metallicTextureFilename.empty())
+	{
+		std::wstring wideTextureName(m_metallicTextureFilename.begin(), m_metallicTextureFilename.end());
+
+		// Load the texture
+		CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_metallicTexture.ReleaseAndGetAddressOf());
+	}
+
+	if (!m_aoTextureFilename.empty())
+	{
+		std::wstring wideTextureName(m_aoTextureFilename.begin(), m_aoTextureFilename.end());
+
+		// Load the texture
+		CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_aoTexture.ReleaseAndGetAddressOf());
+	}
+
+	if (!m_normalTextureFilename.empty())
+	{
+		std::wstring wideTextureName(m_normalTextureFilename.begin(), m_normalTextureFilename.end());
+
+		// Load the texture
+		CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_normalTexture.ReleaseAndGetAddressOf());
+	}
+
+	if (!m_emissiveTextureFilename.empty())
+	{
+		std::wstring wideTextureName(m_emissiveTextureFilename.begin(), m_emissiveTextureFilename.end());
+
+		// Load the texture
+		CreateDDSTextureFromFile(device, wideTextureName.c_str(), nullptr, m_emissiveTexture.ReleaseAndGetAddressOf());
 	}
 
 	return true;
@@ -114,6 +148,31 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 	if (m_diffuseTexture)
 	{
 		deviceContext->PSSetShaderResources(0, 1, m_diffuseTexture.GetAddressOf());
+	}
+
+	if (m_roughnessTexture)
+	{
+		deviceContext->PSSetShaderResources(1, 1, m_roughnessTexture.GetAddressOf());
+	}
+
+	if (m_metallicTexture)
+	{
+		deviceContext->PSSetShaderResources(2, 1, m_metallicTexture.GetAddressOf());
+	}
+
+	if (m_normalTexture)
+	{
+		deviceContext->PSSetShaderResources(3, 1, m_normalTexture.GetAddressOf());
+	}
+
+	if (m_emissiveTexture)
+	{
+		deviceContext->PSSetShaderResources(4, 1, m_emissiveTexture.GetAddressOf());
+	}
+
+	if (m_aoTexture)
+	{
+		deviceContext->PSSetShaderResources(5, 1, m_aoTexture.GetAddressOf());
 	}
 
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
@@ -423,21 +482,50 @@ bool ModelClass::LoadMaterial(char* filename)
 	char line[256];
 	while (fgets(line, sizeof(line), file))
 	{
-		if (strncmp(line, "map_Kd", 6) == 0)
-		{
-			std::string strLine(line);
-			size_t pos = strLine.find_first_not_of(" \t", 6); // after 'map_Kd'
+		std::string strLine(line);
 
-			if (pos != std::string::npos)
-			{
-				std::string texturePath = strLine.substr(pos);
-				texturePath.erase(std::remove(texturePath.begin(), texturePath.end(), '\n'), texturePath.end());
-				texturePath.erase(std::remove(texturePath.begin(), texturePath.end(), '\r'), texturePath.end());
-				m_diffuseTextureFilename = texturePath;
-			}
-			break;
+		if (strLine.find("map_Kd") != std::string::npos) // Base color texture
+		{
+			m_diffuseTextureFilename = ParseTextureFilename(strLine, "map_Kd");
+		}
+		else if (strLine.find("map_Pr") != std::string::npos) // Roughness texture
+		{
+			m_roughnessTextureFilename = ParseTextureFilename(strLine, "map_Pr");
+		}
+		else if (strLine.find("map_Pm") != std::string::npos) // Metalness texture
+		{
+			m_metallicTextureFilename = ParseTextureFilename(strLine, "map_Pm");
+		}
+		else if (strLine.find("map_Ke") != std::string::npos) // Emissive texture
+		{
+			m_emissiveTextureFilename = ParseTextureFilename(strLine, "map_Ke");
+		}
+		else if (strLine.find("map_Bump") != std::string::npos) // Normal texture
+		{
+			m_normalTextureFilename = ParseTextureFilename(strLine, "map_Bump");
 		}
 	}
 	fclose(file);
 	return true;
+}
+
+std::string ModelClass::ParseTextureFilename(const std::string& line, const std::string& token)
+{
+	size_t pos = line.find(token);
+	if (pos == std::string::npos)
+	{
+		return "";
+	}
+
+	pos += token.length();
+	pos = line.find_first_not_of(" \t", pos);
+	if (pos == std::string::npos)
+	{
+		return "";
+	}
+
+	std::string texturePath = line.substr(pos);
+	texturePath.erase(std::remove(texturePath.begin(), texturePath.end(), '\n'), texturePath.end());
+	texturePath.erase(std::remove(texturePath.begin(), texturePath.end(), '\r'), texturePath.end());
+	return texturePath;
 }

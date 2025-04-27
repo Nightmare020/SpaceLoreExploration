@@ -41,9 +41,6 @@
     <ClInclude Include="RenderTexture.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="imconfig.h">
       <Filter>Imgui</Filter>
     </ClInclude>
@@ -90,9 +87,6 @@
     </ClCompile>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="RenderTexture.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">

@@ -82,6 +82,20 @@ DirectX::SimpleMath::Vector3 Camera::getForward()
 	return m_forward;
 }
 
+DirectX::SimpleMath::Vector3 Camera::getRight()
+{
+	DirectX::SimpleMath::Vector3 up = 
+		DirectX::SimpleMath::Vector3(0.0f, 1.0f, 0.0f); // World up
+
+	// Current forward vector
+	DirectX::SimpleMath::Vector3 forward = m_forward;
+
+	DirectX::SimpleMath::Vector3 right = up.Cross(forward);
+	right.Normalize();
+	return right;
+
+}
+
 void Camera::setRotation(DirectX::SimpleMath::Vector3 newRotation)
 {
 	m_orientation = newRotation;
