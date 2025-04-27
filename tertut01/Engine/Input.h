@@ -28,6 +28,11 @@ public:
 	void Update();
 	bool Quit();
 	InputCommands getGameInput();
+	DirectX::Mouse::State getMouseState() const;
+	DirectX::SimpleMath::Vector2 getMouseDelta() const;
+	void UpdatePreviousMouseState();
+	void LockMouse();
+	void UnlockMouse();
 
 
 private:
@@ -37,5 +42,7 @@ private:
 	DirectX::Keyboard::KeyboardStateTracker m_KeyboardTracker;
 	DirectX::Mouse::ButtonStateTracker		m_MouseTracker;
 	InputCommands							m_GameInput;
+	DirectX::Mouse::State					m_previousMouseState;
+	HWND									m_window;
 };
 

@@ -45,13 +45,18 @@ Camera::~Camera()
 
 void Camera::Update()
 {
+	float pitch = m_orientation.x;
+	float yaw = m_orientation.y;
+
 	//rotation in yaw - using the paramateric equation of a circle
-	m_forward.x = sin((m_orientation.y)*3.1415f / 180.0f);
-	m_forward.z = cos((m_orientation.y)*3.1415f / 180.0f);
+	m_forward.x = cosf(pitch) * sinf(yaw);
+	m_forward.y = sinf(pitch);
+	m_forward.z = cosf(pitch) * cosf(yaw);
 	m_forward.Normalize();
 
 	//create right vector from look Direction
-	m_forward.Cross(DirectX::SimpleMath::Vector3::UnitY, m_right);
+	m_right = m_forward.Cross(DirectX::SimpleMath::Vector3::UnitY);
+	m_right.Normalize();
 
 	//update lookat point
 	m_lookat = m_position + m_forward;

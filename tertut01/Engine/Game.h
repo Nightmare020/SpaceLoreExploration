@@ -71,6 +71,7 @@ private:
 	//input manager. 
 	Input									m_input;
 	InputCommands							m_gameInputCommands;
+	bool 								    m_gameStarted;
 
     // DirectXTK objects.
     std::unique_ptr<DirectX::CommonStates>                                  m_states;
@@ -112,8 +113,6 @@ private:
 	RECT																	m_fullscreenRect;
 	RECT																	m_CameraViewRect;
 	
-
-
 #ifdef DXTK_AUDIO
     std::unique_ptr<DirectX::AudioEngine>                                   m_audEngine;
     std::unique_ptr<DirectX::WaveBank>                                      m_waveBank;
@@ -133,4 +132,13 @@ private:
     DirectX::SimpleMath::Matrix                                             m_world;
     DirectX::SimpleMath::Matrix                                             m_view;
     DirectX::SimpleMath::Matrix                                             m_projection;
+	DirectX::SimpleMath::Matrix                                             m_spaceShipWorld;
+
+    // SPACESHIP MOVEMENT
+    DirectX::SimpleMath::Vector3                                            m_SpaceshipPosition;
+    float																    m_SpaceshipRotation;
+    
+    bool 																    m_showFlames;
+	DirectX::SimpleMath::Matrix											    m_flameLeftWorld;
+	DirectX::SimpleMath::Matrix											    m_flameRightWorld;
 };

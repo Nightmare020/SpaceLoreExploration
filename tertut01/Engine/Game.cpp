@@ -21,6 +21,7 @@ Game::Game() noexcept(false)
 {
     m_deviceResources = std::make_unique<DX::DeviceResources>();
     m_deviceResources->RegisterDeviceNotify(this);
+	m_gameStarted = false;
 }
 
 Game::~Game()
@@ -77,6 +78,10 @@ void Game::Initialize(HWND window, int width, int height)
 	m_Camera01.setPosition(Vector3(0.0f, 0.0f, 4.0f));
 	m_Camera01.setRotation(Vector3(-90.0f, -180.0f, 0.0f));	//orientation is -90 becuase zero will be looking up at the sky straight up. 
 
+	// setup spaceship movement
+	m_SpaceshipPosition = Vector3(0.0f, 0.0f, 0.0f);
+	m_SpaceshipRotation = 0.0f;
+	m_showFlames = false;
 	
 #ifdef DXTK_AUDIO
     // Create DirectXTK for Audio objects
@@ -138,42 +143,127 @@ void Game::Update(DX::StepTimer const& timer)
 	//this is hacky,  i dont like this here.  
 	auto device = m_deviceResources->GetD3DDevice();
 
-	//note that currently.  Delta-time is not considered in the game object movement. 
-	if (m_gameInputCommands.left)
+    // Get mouse state
+	auto mouseDelta = m_input.getMouseDelta();
+
+	// Check if start game (TAB) is pressed
+	if (m_gameInputCommands.startGame && !m_gameStarted)
 	{
-		Vector3 position = m_Camera01.getPosition();
-		position += m_Camera01.getRight() * m_Camera01.getMoveSpeed();
-		m_Camera01.setPosition(position);
+		if (!m_gameStarted)
+		{
+			// Start the game
+			m_gameStarted = true;
+		}
+		else
+		{
+			// Stop the game
+			m_gameStarted = false;
+		}
+
 	}
-	if (m_gameInputCommands.right)
+
+	// -- Free Camera Mode --
+	if (!m_gameStarted)
 	{
-		Vector3 position = m_Camera01.getPosition();
-		position -= m_Camera01.getRight() * m_Camera01.getMoveSpeed();
-		m_Camera01.setPosition(position);
+		//note that currently.  Delta-time is not considered in the game object movement. 
+		if (m_gameInputCommands.left)
+		{
+			Vector3 position = m_Camera01.getPosition();
+			position += m_Camera01.getRight() * m_Camera01.getMoveSpeed();
+			m_Camera01.setPosition(position);
+		}
+		if (m_gameInputCommands.right)
+		{
+			Vector3 position = m_Camera01.getPosition();
+			position -= m_Camera01.getRight() * m_Camera01.getMoveSpeed();
+			m_Camera01.setPosition(position);
+		}
+		if (m_gameInputCommands.forward)
+		{
+			Vector3 position = m_Camera01.getPosition(); //get the position
+			position += (m_Camera01.getForward() * m_Camera01.getMoveSpeed()); //add the forward vector
+			m_Camera01.setPosition(position);
+		}
+		if (m_gameInputCommands.back)
+		{
+			Vector3 position = m_Camera01.getPosition(); //get the position
+			position -= (m_Camera01.getForward() * m_Camera01.getMoveSpeed()); //add the forward vector
+			m_Camera01.setPosition(position);
+		}
+		if (m_gameInputCommands.moveUp)
+		{
+			Vector3 position = m_Camera01.getPosition(); //get the position
+			position.y += m_Camera01.getMoveSpeed(); //add the forward vector
+			m_Camera01.setPosition(position);
+		}
+		if (m_gameInputCommands.moveDown)
+		{
+			Vector3 position = m_Camera01.getPosition(); //get the position
+			position.y -= m_Camera01.getMoveSpeed(); //add the forward vector
+			m_Camera01.setPosition(position);
+		}
+
+		// Handle camera rotation when righ mouse button is down
+		if (m_gameInputCommands.rightMouseDown)
+		{
+			float rotationSpeed = 0.25f; // Rotation sensitivity
+			Vector3 rotation = m_Camera01.getRotation();
+
+			rotation.y -= mouseDelta.x * rotationSpeed * 0.01f;
+			rotation.x -= mouseDelta.y * (rotationSpeed * 0.01f * 0.8f); // reduce pitch speed a bit
+
+			// Clamp putch (c rotation) between -89 and 89 degrees to avoid flipping
+			if (rotation.x > 89.0f) rotation.x = 89.0f;
+			if (rotation.x < -89.0f) rotation.x = -89.0f;
+
+			m_Camera01.setRotation(rotation);
+		}
 	}
-	if (m_gameInputCommands.forward)
+	else
 	{
-		Vector3 position = m_Camera01.getPosition(); //get the position
-		position += (m_Camera01.getForward()*m_Camera01.getMoveSpeed()); //add the forward vector
-		m_Camera01.setPosition(position);
-	}
-	if (m_gameInputCommands.back)
-	{
-		Vector3 position = m_Camera01.getPosition(); //get the position
-		position -= (m_Camera01.getForward()*m_Camera01.getMoveSpeed()); //add the forward vector
-		m_Camera01.setPosition(position);
-	}
-	if (m_gameInputCommands.moveUp)
-	{
-		Vector3 position = m_Camera01.getPosition(); //get the position
-		position.y += m_Camera01.getMoveSpeed(); //add the forward vector
-		m_Camera01.setPosition(position);
-	}
-	if (m_gameInputCommands.moveDown)
-	{
-		Vector3 position = m_Camera01.getPosition(); //get the position
-		position.y -= m_Camera01.getMoveSpeed(); //add the forward vector
-		m_Camera01.setPosition(position);
+		// -- Gameplay Mode: Control teh spaceship --
+
+		const float moveSpeed = 0.1f;
+		const float rotationSpeed = 2.5f; // degrees per frame
+
+		if (m_gameInputCommands.forward)
+		{
+			// Move spaceship forward in its current facing direction
+			m_SpaceshipPosition.x += sinf(XMConvertToRadians(m_SpaceshipRotation)) * moveSpeed;
+			m_SpaceshipPosition.z += cosf(XMConvertToRadians(m_SpaceshipRotation)) * moveSpeed;
+		}
+
+		if (m_gameInputCommands.left)
+		{
+			m_SpaceshipRotation += rotationSpeed; // Rotate left
+		}
+		if (m_gameInputCommands.right)
+		{
+			m_SpaceshipRotation -= rotationSpeed; // Rotate right
+		}
+
+		// Update spaceship world matrix
+		m_spaceShipWorld = Matrix::CreateRotationY(XMConvertToRadians(m_SpaceshipRotation)) *
+			Matrix::CreateTranslation(m_SpaceshipPosition);
+
+		// Update camera to follow spaceship
+		Vector3 cameraOffset = Vector3(0.0f, 50.0f, -20.0f); // Slightly behind and above
+		Matrix rotationMatrix = Matrix::CreateRotationY(XMConvertToRadians(m_SpaceshipRotation));
+		Vector3 cameraPosition = m_SpaceshipPosition + Vector3::Transform(cameraOffset, rotationMatrix);
+
+		m_Camera01.setPosition(cameraPosition);
+
+		// Look at spaceship
+		Vector3 lookAtTarget = m_SpaceshipPosition;
+		Vector3 direction = lookAtTarget - cameraPosition;
+		direction.Normalize();
+
+		float pitch = asinf(direction.y);
+		float yaw = atan2f(direction.x, direction.z);
+
+		m_Camera01.setRotation(Vector3(pitch, yaw, 0.0f));
+
+		m_world = m_spaceShipWorld;
 	}
 
 	m_Camera01.Update();	//camera update.
@@ -214,6 +304,9 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		ExitGame();
 	}
+
+	//store the previous mouse state for delta calculations
+	m_input.UpdatePreviousMouseState();
 }
 #pragma endregion
 
@@ -244,7 +337,15 @@ void Game::Render()
 
 	//setup and draw cube
 	m_BasicShaderPair.EnableShader(context);
-	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture());
+
+	if (m_gameStarted)
+	{
+		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture());
+	}
+	else
+	{
+		m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture());
+	}
 
     //draw spaceship
 	m_SpaceShipModel.Render(context);

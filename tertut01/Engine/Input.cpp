@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Input.h"
+#include <Windows.h>
 
 
 Input::Input()
@@ -15,6 +16,7 @@ void Input::Initialise(HWND window)
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(window);
+	m_window = window;
 	m_quitApp = false;
 
 	m_GameInput.forward		= false;
@@ -25,6 +27,7 @@ void Input::Initialise(HWND window)
 	m_GameInput.rotLeft		= false;
 	m_GameInput.moveUp		= false;
 	m_GameInput.moveDown	= false;
+	m_GameInput.rightMouseDown = false;
 	m_GameInput.startGame	= false;
 }
 
@@ -72,10 +75,12 @@ void Input::Update()
 	if (m_MouseTracker.rightButton == DirectX::Mouse::ButtonStateTracker::PRESSED)
 	{
 		m_GameInput.rightMouseDown = true;
+		LockMouse(); // lock when pressed
 	}
 	else if (m_MouseTracker.rightButton == DirectX::Mouse::ButtonStateTracker::RELEASED)
 	{
 		m_GameInput.rightMouseDown = false;
+		UnlockMouse(); // unlock when released
 	}
 }
 
@@ -87,4 +92,51 @@ bool Input::Quit()
 InputCommands Input::getGameInput()
 {
 	return m_GameInput;
+}
+
+DirectX::Mouse::State Input::getMouseState() const
+{
+	return m_mouse->GetState();
+}
+
+DirectX::SimpleMath::Vector2 Input::getMouseDelta() const
+{
+	auto current = m_mouse->GetState();
+	DirectX::SimpleMath::Vector2 delta;
+
+	delta.x = static_cast<float>(current.x - m_previousMouseState.x);
+	delta.y = static_cast<float>(current.y - m_previousMouseState.y);
+
+	return delta;
+}
+
+void Input::UpdatePreviousMouseState()
+{
+	m_previousMouseState = m_mouse->GetState();
+}
+
+void Input::LockMouse()
+{
+	RECT rect;
+	GetClientRect(m_window, &rect);
+	POINT ul = { rect.left, rect.top };
+	POINT lr = { rect.right, rect.bottom };
+
+	ClientToScreen(m_window, &ul);
+	ClientToScreen(m_window, &lr);
+
+	RECT clipRect;
+	clipRect.left = ul.x;
+	clipRect.top = ul.y;
+	clipRect.right = lr.x;
+	clipRect.bottom = lr.y;
+
+	ClipCursor(&clipRect); // lock cursror inside window
+	ShowCursor(false); // hide cursor
+}
+
+void Input::UnlockMouse()
+{
+	ClipCursor(nullptr); // unlock cursor
+	ShowCursor(true); // show cursor
 }
