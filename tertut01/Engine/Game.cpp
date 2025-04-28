@@ -221,10 +221,13 @@ void Game::Update(DX::StepTimer const& timer)
 	}
 	else
 	{
-		// -- Gameplay Mode: Control teh spaceship --
+		// -- Gameplay Mode: Control the spaceship --
 
 		const float moveSpeed = 0.1f;
 		const float rotationSpeed = 2.5f; // degrees per frame
+
+		// Detect movement to show flames
+		m_showFlames = m_gameInputCommands.forward || m_gameInputCommands.left || m_gameInputCommands.right;
 
 		if (m_gameInputCommands.forward)
 		{
@@ -338,13 +341,23 @@ void Game::Render()
 	//setup and draw cube
 	m_BasicShaderPair.EnableShader(context);
 
+	//draw flames if moving
+	if (m_showFlames)
+	{
+		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, nullptr, true);
+		m_LeftTurboFlameModel.Render(context);
+
+		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, nullptr, true);
+		m_RightTurboFlameModel.Render(context);
+	}
+
 	if (m_gameStarted)
 	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture());
+		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), false);
 	}
 	else
 	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture());
+		m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), false);
 	}
 
     //draw spaceship
@@ -464,6 +477,9 @@ void Game::CreateDeviceDependentResources()
     //setup spaceship model
 	m_SpaceShipModel.InitializeModel(device, "spaceship.obj");
 
+	// Initialize turbo flames
+	m_LeftTurboFlameModel.InitializeModel(device, "FuelTurbo.obj");
+
 	//load and set up our Vertex and Pixel Shaders
 	m_BasicShaderPair.InitStandard(device, L"light_vs.cso", L"light_ps.cso");
 
@@ -474,6 +490,7 @@ void Game::CreateDeviceDependentResources()
 	CreateDDSTextureFromFile(device, L"Material.001_Metallic.dds",		nullptr,	m_texture4.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Material.001_Mixed_AO.dds",		nullptr,	m_texture5.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Material.001_Normal_DirectX.dds",nullptr,	m_texture6.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"TurboFlame_Tex.dds",				nullptr,	m_texture7.ReleaseAndGetAddressOf());
 
 	//Initialise Render to texture
 	m_FirstRenderPass = new RenderTexture(device, 800, 600, 1, 2);	//for our rendering, We dont use the last two properties. but.  they cant be zero and they cant be the same. 

@@ -98,7 +98,7 @@ bool Shader::InitStandard(ID3D11Device * device, WCHAR * vsFilename, WCHAR * psF
 }
 
 bool Shader::SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleMath::Matrix * world, DirectX::SimpleMath::Matrix * view, DirectX::SimpleMath::Matrix * projection, Light *sceneLight1, 
-	ID3D11ShaderResourceView* texture1, ID3D11ShaderResourceView* texture2,
+	ID3D11ShaderResourceView* texture1, bool useTexture, ID3D11ShaderResourceView* texture2,
 	ID3D11ShaderResourceView* texture3, ID3D11ShaderResourceView* texture4,
 	ID3D11ShaderResourceView* texture5, ID3D11ShaderResourceView* texture6)
 {
@@ -123,7 +123,19 @@ bool Shader::SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleM
 	lightPtr = (LightBufferType*)mappedResource.pData;
 	lightPtr->ambient = sceneLight1->getAmbientColour();
 	lightPtr->diffuse = sceneLight1->getDiffuseColour();	
-	lightPtr->position = sceneLight1->getPosition();  
+	lightPtr->position = sceneLight1->getPosition();
+
+	if (useTexture)
+	{
+		lightPtr->flameColor = DirectX::XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f); // Orange
+		lightPtr->useTexture = 0;
+	}
+	else
+	{
+		lightPtr->flameColor = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f); // Black
+		lightPtr->useTexture = 1;
+	}
+
 	lightPtr->padding = 0.0f;
 	context->Unmap(m_lightBuffer, 0);
 	context->PSSetConstantBuffers(0, 1, &m_lightBuffer);	//note the first variable is the mapped buffer ID.  Corresponding to what you set in the PS

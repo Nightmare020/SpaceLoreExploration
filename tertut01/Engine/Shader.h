@@ -16,6 +16,7 @@ public:
 	bool InitStandard(ID3D11Device * device, WCHAR * vsFilename, WCHAR * psFilename);		//Loads the Vert / pixel Shader pair
 	bool SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleMath::Matrix  *world, DirectX::SimpleMath::Matrix  *view, DirectX::SimpleMath::Matrix  *projection, Light *sceneLight1, 
 		ID3D11ShaderResourceView* texture1,
+		bool useTexture,
 		ID3D11ShaderResourceView* texture2 = nullptr,
 		ID3D11ShaderResourceView* texture3 = nullptr,
 		ID3D11ShaderResourceView* texture4 = nullptr,
@@ -39,6 +40,10 @@ private:
 		DirectX::SimpleMath::Vector4 diffuse;
 		DirectX::SimpleMath::Vector3 position;
 		float padding;
+
+		DirectX::SimpleMath::Vector4 flameColor;
+		int useTexture;
+		DirectX::SimpleMath::Vector3 padding2;
 	};
 
 	//buffer to pass in camera world Position

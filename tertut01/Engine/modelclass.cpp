@@ -20,6 +20,10 @@ ModelClass::~ModelClass()
 bool ModelClass::InitializeModel(ID3D11Device *device, char* filename)
 {
 	LoadModel(filename);
+
+	m_vertexCount = preFabVertices.size();
+	m_indexCount = preFabIndices.size();
+
 	InitializeBuffers(device);
 
 	// After initialising buffers, load textures if a material was found
@@ -439,18 +443,6 @@ bool ModelClass::LoadModel(char* filename)
 		preFabVertices.push_back(tempVertex);
 		preFabIndices.push_back(vIndex);
 		vIndex++;
-
-		// Oversimplified vertex data assignment
-		/*tempVertex.position.x = verts[(faces[f + 0] - 1)].x;
-		tempVertex.position.y = verts[(faces[f + 0] - 1)].y;
-		tempVertex.position.z = verts[(faces[f + 0] - 1)].z;
-
-		tempVertex.textureCoordinate.x = texCs[(faces[f + 1] - 1)].x;
-		tempVertex.textureCoordinate.y = texCs[(faces[f + 1] - 1)].y;
-			
-		tempVertex.normal.x = norms[(faces[f + 2] - 1)].x;
-		tempVertex.normal.y = norms[(faces[f + 2] - 1)].y;
-		tempVertex.normal.z = norms[(faces[f + 2] - 1)].z;*/
 	}
 
 	m_indexCount = vIndex;

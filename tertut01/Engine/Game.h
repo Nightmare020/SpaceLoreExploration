@@ -98,6 +98,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture4;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture5;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture6;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture7;
 
 	//Shaders
 	Shader																	m_BasicShaderPair;
@@ -107,6 +108,8 @@ private:
 	ModelClass																m_BasicModel2;
 	ModelClass																m_BasicModel3;
 	ModelClass																m_SpaceShipModel;
+    ModelClass																m_LeftTurboFlameModel;
+    ModelClass																m_RightTurboFlameModel;
 
 	//RenderTextures
 	RenderTexture*															m_FirstRenderPass;

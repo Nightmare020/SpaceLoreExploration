@@ -11,6 +11,10 @@ cbuffer LightBuffer : register(b0)
     float4 diffuseColor;
     float3 lightPosition;
     float padding;
+	
+    float4 flameColor; // Color to use for flames
+    int useTexture; // 0 = no texture, 1 = use texture
+    float3 padding2;
 };
 
 struct InputType
@@ -37,10 +41,18 @@ float4 main(InputType input) : SV_TARGET
 	// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
 	color = ambientColor + (diffuseColor * lightIntensity); //adding ambient
 	color = saturate(color);
-
-	// Sample the pixel color from the texture using the sampler at this texture coordinate location.
-	textureColor = shaderTexture.Sample(SampleType, input.tex);
-	color = color * textureColor;
+	
+	if (useTexture == 1)
+    {
+        // Sample the pixel color from the texture using the sampler at this texture coordinate location.
+        textureColor = shaderTexture.Sample(SampleType, input.tex);
+        color = color * textureColor;
+    }
+    else
+    {
+        // Use solid flame color
+        color = color * flameColor;
+    }
 
     return color;
 }
