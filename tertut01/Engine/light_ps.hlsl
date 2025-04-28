@@ -31,27 +31,27 @@ float4 main(InputType input) : SV_TARGET
     float3	lightDir;
     float	lightIntensity;
     float4	color;
-
-	// Invert the light direction for calculations.
-	lightDir = normalize(input.position3D - lightPosition);
-
-	// Calculate the amount of light on this pixel.
-	lightIntensity = saturate(dot(input.normal, -lightDir));
-
-	// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
-	color = ambientColor + (diffuseColor * lightIntensity); //adding ambient
-	color = saturate(color);
 	
 	if (useTexture == 1)
     {
+        // Invert the light direction for calculations.
+        lightDir = normalize(input.position3D - lightPosition);
+        
+        // Calculate the amount of light on this pixel.
+        lightIntensity = saturate(dot(input.normal, -lightDir));
+        
+        // Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
+        color = ambientColor + (diffuseColor * lightIntensity); //adding ambient
+        color = saturate(color);
+        
         // Sample the pixel color from the texture using the sampler at this texture coordinate location.
         textureColor = shaderTexture.Sample(SampleType, input.tex);
         color = color * textureColor;
     }
     else
     {
-        // Use solid flame color
-        color = color * flameColor;
+        // Use solid flame color, fully emissive
+        color = flameColor;
     }
 
     return color;
