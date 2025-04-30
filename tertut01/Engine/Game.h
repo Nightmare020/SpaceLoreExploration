@@ -13,6 +13,8 @@
 #include "RenderTexture.h"
 
 
+
+
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game final : public DX::IDeviceNotify
@@ -98,7 +100,84 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture4;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture5;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture6;
-    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture7;
+
+    /** PLANETS TEXTURES **/
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSun;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureArid1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureArid2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureArid3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureArid4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureArid5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureBaren1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureBaren2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureBaren3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureBaren4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureBaren5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureDusty1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureDusty2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureDusty3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureDusty4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureDusty5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous6;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous7;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous8;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous9;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous10;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous11;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous12;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous13;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous14;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous15;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous16;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous17;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous18;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous19;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGaseous20;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGrassland1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGrassland2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGrassland3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGrassland4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureGrassland5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureJungle1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureJungle2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureJungle3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureJungle4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureJungle5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMarshy1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMarshy2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMarshy3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMarshy4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMarshy5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMartian1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMartian2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMartian3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMartian4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMartian5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMethane1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMethane2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMethane3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMethane4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureMethane5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSandy1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSandy2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSandy3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSandy4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSandy5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSnowy1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSnowy2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSnowy3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSnowy4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSnowy5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra5;
 
     //Shaders
     Shader																	m_BasicShaderPair;

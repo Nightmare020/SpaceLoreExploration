@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9E2166D7-A35D-3E98-8F5D-05B1AFADF0E5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>AppBasicExampleGui</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AppBasicExampleGui.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AppBasicExampleGui</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AppBasicExampleGui.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AppBasicExampleGui</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">AppBasicExampleGui.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">AppBasicExampleGui</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">AppBasicExampleGui.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">AppBasicExampleGui</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\..\lib\Debug\BulletDynamics_Debug.lib;..\..\..\lib\Debug\BulletCollision_Debug.lib;..\..\..\lib\Debug\LinearMath_Debug.lib;..\..\..\lib\Debug\BulletDynamics_Debug.lib;..\..\..\lib\Debug\BulletCollision_Debug.lib;..\..\..\lib\Debug\LinearMath_Debug.lib;..\..\..\lib\Debug\OpenGLWindow_Debug.lib;..\..\..\lib\Debug\Bullet3Common_Debug.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/Debug/AppBasicExampleGui.lib</ImportLibrary>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/Debug/AppBasicExampleGui.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\..\lib\Release\BulletDynamics.lib;..\..\..\lib\Release\BulletCollision.lib;..\..\..\lib\Release\LinearMath.lib;..\..\..\lib\Release\BulletDynamics.lib;..\..\..\lib\Release\BulletCollision.lib;..\..\..\lib\Release\LinearMath.lib;..\..\..\lib\Release\OpenGLWindow.lib;..\..\..\lib\Release\Bullet3Common.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/Release/AppBasicExampleGui.lib</ImportLibrary>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/Release/AppBasicExampleGui.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\..\lib\MinSizeRel\BulletDynamics_MinsizeRel.lib;..\..\..\lib\MinSizeRel\BulletCollision_MinsizeRel.lib;..\..\..\lib\MinSizeRel\LinearMath_MinsizeRel.lib;..\..\..\lib\MinSizeRel\BulletDynamics_MinsizeRel.lib;..\..\..\lib\MinSizeRel\BulletCollision_MinsizeRel.lib;..\..\..\lib\MinSizeRel\LinearMath_MinsizeRel.lib;..\..\..\lib\MinSizeRel\OpenGLWindow_MinsizeRel.lib;..\..\..\lib\MinSizeRel\Bullet3Common_MinsizeRel.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/MinSizeRel/AppBasicExampleGui.lib</ImportLibrary>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/MinSizeRel/AppBasicExampleGui.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_WIN64;USE_GRAPHICAL_BENCHMARK;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;B3_USE_STANDALONE_EXAMPLE;GLEW_STATIC;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ThirdPartyLibs\glad;C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\btgui\OpenGLWindow\GlewWindows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\..\lib\RelWithDebInfo\BulletDynamics_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\BulletCollision_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\LinearMath_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\BulletDynamics_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\BulletCollision_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\LinearMath_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\OpenGLWindow_RelWithDebugInfo.lib;..\..\..\lib\RelWithDebInfo\Bullet3Common_RelWithDebugInfo.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/RelWithDebInfo/AppBasicExampleGui.lib</ImportLibrary>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/RelWithDebInfo/AppBasicExampleGui.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\BasicDemo\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/bullet3-master/examples/BasicDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine" "-BC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build" --check-stamp-file "C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/bullet3-master/examples/BasicDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine" "-BC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build" --check-stamp-file "C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/bullet3-master/examples/BasicDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine" "-BC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build" --check-stamp-file "C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/bullet3-master/examples/BasicDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine" "-BC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build" --check-stamp-file "C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/BasicDemo/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\BasicDemo\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\BasicDemo\BasicExample.cpp" />
+    <ResourceCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\build3\bullet.rc" />
+    <ClCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\StandaloneMain\main_opengl_single_example.cpp" />
+    <ClCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ExampleBrowser\OpenGLGuiHelper.cpp" />
+    <ClCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ExampleBrowser\GL_ShapeDrawer.cpp" />
+    <ClCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\ExampleBrowser\CollisionShape2TriangleMesh.cpp" />
+    <ClCompile Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\examples\Utils\b3Clock.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\ZERO_CHECK.vcxproj">
+      <Project>{167CBB73-0F39-33F1-9AA9-697AFB5119D9}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\src\Bullet3Common\Bullet3Common.vcxproj">
+      <Project>{EF8AB91D-C120-3A9E-8411-B6D43DDC2D92}</Project>
+      <Name>Bullet3Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\src\BulletCollision\BulletCollision.vcxproj">
+      <Project>{82762B0B-DD93-30F1-BC16-738B23DD9EE7}</Project>
+      <Name>BulletCollision</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\src\BulletDynamics\BulletDynamics.vcxproj">
+      <Project>{4C26E8F3-0F32-3F9B-8436-42671607057F}</Project>
+      <Name>BulletDynamics</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\src\LinearMath\LinearMath.vcxproj">
+      <Project>{32B6873D-8D94-39F8-9270-4B98BF039829}</Project>
+      <Name>LinearMath</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\build\bullet_build\examples\OpenGLWindow\OpenGLWindow.vcxproj">
+      <Project>{412BEE76-9570-3D8D-9BBD-11B6886725C0}</Project>
+      <Name>OpenGLWindow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

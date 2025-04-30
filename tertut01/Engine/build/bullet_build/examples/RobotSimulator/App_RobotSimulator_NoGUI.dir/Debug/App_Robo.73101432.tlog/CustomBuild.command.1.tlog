@@ -1,0 +1,10 @@
+^C:\USERS\ALEJANDRO VAZQUEZ\DOCUMENTS\GITHUB\SPACELOREEXPLORATION\TERTUT01\ENGINE\BULLET3-MASTER\EXAMPLES\ROBOTSIMULATOR\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine" "-BC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build" --check-stamp-file "C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/bullet_build/examples/RobotSimulator/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

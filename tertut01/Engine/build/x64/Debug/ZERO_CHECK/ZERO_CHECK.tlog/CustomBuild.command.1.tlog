@@ -1,0 +1,10 @@
+^C:\USERS\ALEJANDRO VAZQUEZ\DOCUMENTS\GITHUB\SPACELOREEXPLORATION\TERTUT01\ENGINE\BUILD\CMAKEFILES\3732A9DA3EF250B3CBB162F5F3E92E95\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine" "-BC:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/Alejandro Vazquez/Documents/Github/SpaceLoreExploration/tertut01/Engine/build/SpaceLoreGame.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
