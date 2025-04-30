@@ -11,7 +11,7 @@ Shader::~Shader()
 {
 }
 
-bool Shader::InitStandard(ID3D11Device * device, WCHAR * vsFilename, WCHAR * psFilename)
+bool Shader::InitStandard(ID3D11Device* device, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	D3D11_BUFFER_DESC	matrixBufferDesc;
 	D3D11_SAMPLER_DESC	samplerDesc;
@@ -40,10 +40,10 @@ bool Shader::InitStandard(ID3D11Device * device, WCHAR * vsFilename, WCHAR * psF
 
 	// Create the vertex input layout.
 	device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer.data(), vertexShaderBuffer.size(), &m_layout);
-	
+
 
 	//LOAD SHADER:	PIXEL
-	auto pixelShaderBuffer = DX::ReadData(psFilename);	
+	auto pixelShaderBuffer = DX::ReadData(psFilename);
 	result = device->CreatePixelShader(pixelShaderBuffer.data(), pixelShaderBuffer.size(), NULL, &m_pixelShader);
 	if (result != S_OK)
 	{
@@ -97,8 +97,9 @@ bool Shader::InitStandard(ID3D11Device * device, WCHAR * vsFilename, WCHAR * psF
 	return true;
 }
 
-bool Shader::SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleMath::Matrix * world, DirectX::SimpleMath::Matrix * view, DirectX::SimpleMath::Matrix * projection, Light *sceneLight1, 
-	ID3D11ShaderResourceView* texture1, bool useTexture, ID3D11ShaderResourceView* texture2,
+bool Shader::SetShaderParameters(ID3D11DeviceContext* context, DirectX::SimpleMath::Matrix* world, DirectX::SimpleMath::Matrix* view, DirectX::SimpleMath::Matrix* projection, Light* sceneLight1,
+	ID3D11ShaderResourceView* texture1, bool useTexture,
+	DirectX::XMFLOAT4 meshColor, ID3D11ShaderResourceView* texture2,
 	ID3D11ShaderResourceView* texture3, ID3D11ShaderResourceView* texture4,
 	ID3D11ShaderResourceView* texture5, ID3D11ShaderResourceView* texture6)
 {
@@ -122,33 +123,25 @@ bool Shader::SetShaderParameters(ID3D11DeviceContext * context, DirectX::SimpleM
 	context->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	lightPtr = (LightBufferType*)mappedResource.pData;
 	lightPtr->ambient = sceneLight1->getAmbientColour();
-	lightPtr->diffuse = sceneLight1->getDiffuseColour();	
+	lightPtr->diffuse = sceneLight1->getDiffuseColour();
 	lightPtr->position = sceneLight1->getPosition();
 
-	if (useTexture)
-	{
-		lightPtr->flameColor = DirectX::XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f); // Orange
-		lightPtr->useTexture = 0;
-	}
-	else
-	{
-		lightPtr->flameColor = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f); // Black
-		lightPtr->useTexture = 1;
-	}
+	lightPtr->meshColor = meshColor;
+	lightPtr->useTexture = useTexture ? 1 : 0;
 
 	lightPtr->padding = 0.0f;
 	context->Unmap(m_lightBuffer, 0);
 	context->PSSetConstantBuffers(0, 1, &m_lightBuffer);	//note the first variable is the mapped buffer ID.  Corresponding to what you set in the PS
 
 	//pass the desired texture to the pixel shader.
-	ID3D11ShaderResourceView* textures[6] = { texture1, texture2, texture3, 
+	ID3D11ShaderResourceView* textures[6] = { texture1, texture2, texture3,
 		texture4, texture5, texture6 };
 	context->PSSetShaderResources(0, 6, textures);
 
 	return false;
 }
 
-void Shader::EnableShader(ID3D11DeviceContext * context)
+void Shader::EnableShader(ID3D11DeviceContext* context)
 {
 	context->IASetInputLayout(m_layout);							//set the input layout for the shader to match out geometry
 	context->VSSetShader(m_vertexShader.Get(), 0, 0);				//turn on vertex shader

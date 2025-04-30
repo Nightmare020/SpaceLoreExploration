@@ -44,23 +44,23 @@ public:
 #endif
 
     // Properties
-    void GetDefaultSize( int& width, int& height ) const;
-	
+    void GetDefaultSize(int& width, int& height) const;
+
 private:
 
-	struct MatrixBufferType
-	{
-		DirectX::XMMATRIX world;
-		DirectX::XMMATRIX view;
-		DirectX::XMMATRIX projection;
-	}; 
+    struct MatrixBufferType
+    {
+        DirectX::XMMATRIX world;
+        DirectX::XMMATRIX view;
+        DirectX::XMMATRIX projection;
+    };
 
     void Update(DX::StepTimer const& timer);
     void Render();
     void Clear();
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
-	void SetupGUI();
+    void SetupGUI();
 
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
@@ -68,54 +68,56 @@ private:
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
 
-	//input manager. 
-	Input									m_input;
-	InputCommands							m_gameInputCommands;
-	bool 								    m_gameStarted;
+    //input manager. 
+    Input									m_input;
+    InputCommands							m_gameInputCommands;
+    bool 								    m_gameStarted;
 
     // DirectXTK objects.
     std::unique_ptr<DirectX::CommonStates>                                  m_states;
-    std::unique_ptr<DirectX::BasicEffect>                                   m_batchEffect;	
+    std::unique_ptr<DirectX::BasicEffect>                                   m_batchEffect;
     std::unique_ptr<DirectX::EffectFactory>                                 m_fxFactory;
     std::unique_ptr<DirectX::SpriteBatch>                                   m_sprites;
     std::unique_ptr<DirectX::SpriteFont>                                    m_font;
 
-	// Scene Objects
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>  m_batch;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>                               m_batchInputLayout;
-	std::unique_ptr<DirectX::GeometricPrimitive>                            m_testmodel;
+    // Scene Objects
+    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>  m_batch;
+    Microsoft::WRL::ComPtr<ID3D11InputLayout>                               m_batchInputLayout;
+    std::unique_ptr<DirectX::GeometricPrimitive>                            m_testmodel;
 
-	//lights
-	Light																	m_Light;
+    //lights
+    Light																	m_Light;
 
-	//Cameras
-	Camera																	m_Camera01;
+    //Cameras
+    Camera																	m_Camera01;
 
-	//textures 
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture1;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture2;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture3;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture4;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture5;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture6;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture7;
+    //textures 
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture1;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture2;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture3;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture4;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture6;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture7;
 
-	//Shaders
-	Shader																	m_BasicShaderPair;
+    //Shaders
+    Shader																	m_BasicShaderPair;
 
-	//Scene. 
-	ModelClass																m_BasicModel;
-	ModelClass																m_BasicModel2;
-	ModelClass																m_BasicModel3;
-	ModelClass																m_SpaceShipModel;
-    ModelClass																m_LeftTurboFlameModel;
-    ModelClass																m_RightTurboFlameModel;
+    //Scene. 
+    ModelClass																m_BasicModel;
+    ModelClass																m_BasicModel2;
+    ModelClass																m_BasicModel3;
+    ModelClass																m_SpaceShipModel;
+    ModelClass																m_TurboFlameLeftModel;
+    ModelClass																m_TurboFlameRightModel;
+    ModelClass																m_PlanetModel;
+    ModelClass																m_PlanetHaloModel;
 
-	//RenderTextures
-	RenderTexture*															m_FirstRenderPass;
-	RECT																	m_fullscreenRect;
-	RECT																	m_CameraViewRect;
-	
+    //RenderTextures
+    RenderTexture* m_FirstRenderPass;
+    RECT																	m_fullscreenRect;
+    RECT																	m_CameraViewRect;
+
 #ifdef DXTK_AUDIO
     std::unique_ptr<DirectX::AudioEngine>                                   m_audEngine;
     std::unique_ptr<DirectX::WaveBank>                                      m_waveBank;
@@ -123,7 +125,7 @@ private:
     std::unique_ptr<DirectX::SoundEffectInstance>                           m_effect1;
     std::unique_ptr<DirectX::SoundEffectInstance>                           m_effect2;
 #endif
-    
+
 
 #ifdef DXTK_AUDIO
     uint32_t                                                                m_audioEvent;
@@ -135,13 +137,13 @@ private:
     DirectX::SimpleMath::Matrix                                             m_world;
     DirectX::SimpleMath::Matrix                                             m_view;
     DirectX::SimpleMath::Matrix                                             m_projection;
-	DirectX::SimpleMath::Matrix                                             m_spaceShipWorld;
+    DirectX::SimpleMath::Matrix                                             m_spaceShipWorld;
 
     // SPACESHIP MOVEMENT
     DirectX::SimpleMath::Vector3                                            m_SpaceshipPosition;
     float																    m_SpaceshipRotation;
-    
+
     bool 																    m_showFlames;
-	DirectX::SimpleMath::Matrix											    m_flameLeftWorld;
-	DirectX::SimpleMath::Matrix											    m_flameRightWorld;
+    DirectX::SimpleMath::Matrix											    m_flameLeftWorld;
+    DirectX::SimpleMath::Matrix											    m_flameRightWorld;
 };

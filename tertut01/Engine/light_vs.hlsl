@@ -20,7 +20,7 @@ struct OutputType
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
-	float3 position3D : TEXCOORD2;
+    float3 position3D : TEXCOORD2;
 };
 
 OutputType main(InputType input)
@@ -38,13 +38,13 @@ OutputType main(InputType input)
     output.tex = input.tex;
 
 	 // Calculate the normal vector against the world matrix only.
-    output.normal = mul(input.normal, (float3x3)worldMatrix);
+    output.normal = mul(input.normal, (float3x3) worldMatrix);
 	
     // Normalize the normal vector.
     output.normal = normalize(output.normal);
 
 	// world position of vertex (for point light)
-	output.position3D = (float3)mul(input.position, worldMatrix);
+    output.position3D = (float3) mul(input.position, worldMatrix);
 
     return output;
 }

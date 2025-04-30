@@ -19,18 +19,18 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept(false)
 {
-    m_deviceResources = std::make_unique<DX::DeviceResources>();
-    m_deviceResources->RegisterDeviceNotify(this);
+	m_deviceResources = std::make_unique<DX::DeviceResources>();
+	m_deviceResources->RegisterDeviceNotify(this);
 	m_gameStarted = false;
 }
 
 Game::~Game()
 {
 #ifdef DXTK_AUDIO
-    if (m_audEngine)
-    {
-        m_audEngine->Suspend();
-    }
+	if (m_audEngine)
+	{
+		m_audEngine->Suspend();
+	}
 #endif
 }
 
@@ -40,13 +40,13 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_input.Initialise(window);
 
-    m_deviceResources->SetWindow(window, width, height);
+	m_deviceResources->SetWindow(window, width, height);
 
-    m_deviceResources->CreateDeviceResources();
-    CreateDeviceDependentResources();
+	m_deviceResources->CreateDeviceResources();
+	CreateDeviceDependentResources();
 
-    m_deviceResources->CreateWindowSizeDependentResources();
-    CreateWindowSizeDependentResources();
+	m_deviceResources->CreateWindowSizeDependentResources();
+	CreateWindowSizeDependentResources();
 
 	//setup imgui.  its up here cos we need the window handle too
 	//pulled from imgui directx11 example
@@ -82,28 +82,28 @@ void Game::Initialize(HWND window, int width, int height)
 	m_SpaceshipPosition = Vector3(0.0f, 0.0f, 0.0f);
 	m_SpaceshipRotation = 0.0f;
 	m_showFlames = false;
-	
+
 #ifdef DXTK_AUDIO
-    // Create DirectXTK for Audio objects
-    AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
+	// Create DirectXTK for Audio objects
+	AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
 #ifdef _DEBUG
-    eflags = eflags | AudioEngine_Debug;
+	eflags = eflags | AudioEngine_Debug;
 #endif
 
-    m_audEngine = std::make_unique<AudioEngine>(eflags);
+	m_audEngine = std::make_unique<AudioEngine>(eflags);
 
-    m_audioEvent = 0;
-    m_audioTimerAcc = 10.f;
-    m_retryDefault = false;
+	m_audioEvent = 0;
+	m_audioTimerAcc = 10.f;
+	m_retryDefault = false;
 
-    m_waveBank = std::make_unique<WaveBank>(m_audEngine.get(), L"adpcmdroid.xwb");
+	m_waveBank = std::make_unique<WaveBank>(m_audEngine.get(), L"adpcmdroid.xwb");
 
-    m_soundEffect = std::make_unique<SoundEffect>(m_audEngine.get(), L"MusicMono_adpcm.wav");
-    m_effect1 = m_soundEffect->CreateInstance();
-    m_effect2 = m_waveBank->CreateInstance(10);
+	m_soundEffect = std::make_unique<SoundEffect>(m_audEngine.get(), L"MusicMono_adpcm.wav");
+	m_effect1 = m_soundEffect->CreateInstance();
+	m_effect2 = m_waveBank->CreateInstance(10);
 
-    m_effect1->Play(true);
-    m_effect2->Play();
+	m_effect1->Play(true);
+	m_effect2->Play();
 #endif
 }
 
@@ -114,36 +114,36 @@ void Game::Tick()
 	//take in input
 	m_input.Update();								//update the hardware
 	m_gameInputCommands = m_input.getGameInput();	//retrieve the input for our game
-	
+
 	//Update all game objects
-    m_timer.Tick([&]()
-    {
-        Update(m_timer);
-    });
+	m_timer.Tick([&]()
+		{
+			Update(m_timer);
+		});
 
 	//Render all game content. 
-    Render();
+	Render();
 
 #ifdef DXTK_AUDIO
-    // Only update audio engine once per frame
-    if (!m_audEngine->IsCriticalError() && m_audEngine->Update())
-    {
-        // Setup a retry in 1 second
-        m_audioTimerAcc = 1.f;
-        m_retryDefault = true;
-    }
+	// Only update audio engine once per frame
+	if (!m_audEngine->IsCriticalError() && m_audEngine->Update())
+	{
+		// Setup a retry in 1 second
+		m_audioTimerAcc = 1.f;
+		m_retryDefault = true;
+	}
 #endif
 
-	
+
 }
 
 // Updates the world.
 void Game::Update(DX::StepTimer const& timer)
-{	
+{
 	//this is hacky,  i dont like this here.  
 	auto device = m_deviceResources->GetD3DDevice();
 
-    // Get mouse state
+	// Get mouse state
 	auto mouseDelta = m_input.getMouseDelta();
 
 	// Check if start game (TAB) is pressed
@@ -278,31 +278,31 @@ void Game::Update(DX::StepTimer const& timer)
 	SetupGUI();
 
 #ifdef DXTK_AUDIO
-    m_audioTimerAcc -= (float)timer.GetElapsedSeconds();
-    if (m_audioTimerAcc < 0)
-    {
-        if (m_retryDefault)
-        {
-            m_retryDefault = false;
-            if (m_audEngine->Reset())
-            {
-                // Restart looping audio
-                m_effect1->Play(true);
-            }
-        }
-        else
-        {
-            m_audioTimerAcc = 4.f;
+	m_audioTimerAcc -= (float)timer.GetElapsedSeconds();
+	if (m_audioTimerAcc < 0)
+	{
+		if (m_retryDefault)
+		{
+			m_retryDefault = false;
+			if (m_audEngine->Reset())
+			{
+				// Restart looping audio
+				m_effect1->Play(true);
+			}
+		}
+		else
+		{
+			m_audioTimerAcc = 4.f;
 
-            m_waveBank->Play(m_audioEvent++);
+			m_waveBank->Play(m_audioEvent++);
 
-            if (m_audioEvent >= 11)
-                m_audioEvent = 0;
-        }
-    }
+			if (m_audioEvent >= 11)
+				m_audioEvent = 0;
+		}
+	}
 #endif
 
-  
+
 	if (m_input.Quit())
 	{
 		ExitGame();
@@ -316,17 +316,17 @@ void Game::Update(DX::StepTimer const& timer)
 #pragma region Frame Render
 // Draws the scene.
 void Game::Render()
-{	
-    // Don't try to render anything before the first Update.
-    if (m_timer.GetFrameCount() == 0)
-    {
-        return;
-    }
+{
+	// Don't try to render anything before the first Update.
+	if (m_timer.GetFrameCount() == 0)
+	{
+		return;
+	}
 
-    Clear();
+	Clear();
 
-    m_deviceResources->PIXBeginEvent(L"Render");
-    auto context = m_deviceResources->GetD3DDeviceContext();
+	m_deviceResources->PIXBeginEvent(L"Render");
+	auto context = m_deviceResources->GetD3DDeviceContext();
 	auto renderTargetView = m_deviceResources->GetRenderTargetView();
 	auto depthTargetView = m_deviceResources->GetDepthStencilView();
 
@@ -334,64 +334,75 @@ void Game::Render()
 	context->OMSetBlendState(m_states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 	context->RSSetState(m_states->CullClockwise());
-//	context->RSSetState(m_states->Wireframe());
+	//	context->RSSetState(m_states->Wireframe());
 
-	
+
 
 	//setup and draw cube
 	m_BasicShaderPair.EnableShader(context);
 
-	//draw flames if moving
-	if (m_showFlames)
-	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, nullptr, true);
-		m_LeftTurboFlameModel.Render(context);
-
-		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, nullptr, true);
-		m_RightTurboFlameModel.Render(context);
-	}
+	//flame color
+	DirectX::XMFLOAT4 flameColor(1.0f, 0.2f, 0.2f, 1.0f);
 
 	if (m_gameStarted)
 	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), false);
+		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), true);
 	}
 	else
 	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), false);
+		m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), true);
 	}
 
-    //draw spaceship
+	//draw spaceship
 	m_SpaceShipModel.Render(context);
-	
+
+	//draw flames if moving
+	if (m_showFlames)
+	{
+		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, nullptr, false, flameColor);
+		m_TurboFlameLeftModel.Render(context);
+		m_TurboFlameRightModel.Render(context);
+	}
+
+	//draw planet
+	DirectX::XMFLOAT4 planetColor(0.1f, 0.1f, 0.8f, 1.0f);
+	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, nullptr, false, planetColor);
+	m_PlanetModel.Render(context);
+
+	//draw planet halo
+	DirectX::XMFLOAT4 planetHaloColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, nullptr, false, planetHaloColor);
+	m_PlanetHaloModel.Render(context);
+
 	//render our GUI
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-	
 
-    // Show the new frame.
-    m_deviceResources->Present();
+
+	// Show the new frame.
+	m_deviceResources->Present();
 }
 
 
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    m_deviceResources->PIXBeginEvent(L"Clear");
+	m_deviceResources->PIXBeginEvent(L"Clear");
 
-    // Clear the views.
-    auto context = m_deviceResources->GetD3DDeviceContext();
-    auto renderTarget = m_deviceResources->GetRenderTargetView();
-    auto depthStencil = m_deviceResources->GetDepthStencilView();
+	// Clear the views.
+	auto context = m_deviceResources->GetD3DDeviceContext();
+	auto renderTarget = m_deviceResources->GetRenderTargetView();
+	auto depthStencil = m_deviceResources->GetDepthStencilView();
 
-    context->ClearRenderTargetView(renderTarget, Colors::Black);
-    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+	context->ClearRenderTargetView(renderTarget, Colors::Black);
+	context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 
-    // Set the viewport.
-    auto viewport = m_deviceResources->GetScreenViewport();
-    context->RSSetViewports(1, &viewport);
+	// Set the viewport.
+	auto viewport = m_deviceResources->GetScreenViewport();
+	context->RSSetViewports(1, &viewport);
 
-    m_deviceResources->PIXEndEvent();
+	m_deviceResources->PIXEndEvent();
 }
 
 #pragma endregion
@@ -409,50 +420,50 @@ void Game::OnDeactivated()
 void Game::OnSuspending()
 {
 #ifdef DXTK_AUDIO
-    m_audEngine->Suspend();
+	m_audEngine->Suspend();
 #endif
 }
 
 void Game::OnResuming()
 {
-    m_timer.ResetElapsedTime();
+	m_timer.ResetElapsedTime();
 
 #ifdef DXTK_AUDIO
-    m_audEngine->Resume();
+	m_audEngine->Resume();
 #endif
 }
 
 void Game::OnWindowMoved()
 {
-    auto r = m_deviceResources->GetOutputSize();
-    m_deviceResources->WindowSizeChanged(r.right, r.bottom);
+	auto r = m_deviceResources->GetOutputSize();
+	m_deviceResources->WindowSizeChanged(r.right, r.bottom);
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
 {
-    if (!m_deviceResources->WindowSizeChanged(width, height))
-        return;
+	if (!m_deviceResources->WindowSizeChanged(width, height))
+		return;
 
-    CreateWindowSizeDependentResources();
+	CreateWindowSizeDependentResources();
 }
 
 #ifdef DXTK_AUDIO
 void Game::NewAudioDevice()
 {
-    if (m_audEngine && !m_audEngine->IsAudioDevicePresent())
-    {
-        // Setup a retry in 1 second
-        m_audioTimerAcc = 1.f;
-        m_retryDefault = true;
-    }
+	if (m_audEngine && !m_audEngine->IsAudioDevicePresent())
+	{
+		// Setup a retry in 1 second
+		m_audioTimerAcc = 1.f;
+		m_retryDefault = true;
+	}
 }
 #endif
 
 // Properties
 void Game::GetDefaultSize(int& width, int& height) const
 {
-    width = 800;
-    height = 600;
+	width = 800;
+	height = 600;
 }
 #pragma endregion
 
@@ -460,37 +471,42 @@ void Game::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void Game::CreateDeviceDependentResources()
 {
-    auto context = m_deviceResources->GetD3DDeviceContext();
-    auto device = m_deviceResources->GetD3DDevice();
+	auto context = m_deviceResources->GetD3DDeviceContext();
+	auto device = m_deviceResources->GetD3DDevice();
 
-    m_states = std::make_unique<CommonStates>(device);
-    m_fxFactory = std::make_unique<EffectFactory>(device);
-    m_sprites = std::make_unique<SpriteBatch>(context);
-    m_font = std::make_unique<SpriteFont>(device, L"SegoeUI_18.spritefont");
+	m_states = std::make_unique<CommonStates>(device);
+	m_fxFactory = std::make_unique<EffectFactory>(device);
+	m_sprites = std::make_unique<SpriteBatch>(context);
+	m_font = std::make_unique<SpriteFont>(device, L"SegoeUI_18.spritefont");
 	m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 
 	//setup our test model
 	m_BasicModel.InitializeSphere(device);
-	m_BasicModel2.InitializeModel(device,"drone.obj");
+	m_BasicModel2.InitializeModel(device, "drone.obj");
 	m_BasicModel3.InitializeBox(device, 10.0f, 0.1f, 10.0f);	//box includes dimensions
 
-    //setup spaceship model
-	m_SpaceShipModel.InitializeModel(device, "spaceship.obj");
+	//setup spaceship model
+	m_SpaceShipModel.InitializeModel(device, "SpaceShip.obj");
 
 	// Initialize turbo flames
-	m_LeftTurboFlameModel.InitializeModel(device, "FuelTurbo.obj");
+	m_TurboFlameLeftModel.InitializeModel(device, "FuelTurboFlameLeft.obj");
+	m_TurboFlameRightModel.InitializeModel(device, "FuelTurboFlameRight.obj");
+
+	// Initialize planet
+	m_PlanetModel.InitializeModel(device, "Planet.obj");
+	m_PlanetHaloModel.InitializeModel(device, "PlanetHalo.obj");
 
 	//load and set up our Vertex and Pixel Shaders
 	m_BasicShaderPair.InitStandard(device, L"light_vs.cso", L"light_ps.cso");
 
 	//load Textures
-	CreateDDSTextureFromFile(device, L"Material.001_Base_color.dds",	nullptr,	m_texture1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Material.001_Roughness.dds",		nullptr,	m_texture2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Material.001_Emissive.dds",		nullptr,	m_texture3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Material.001_Metallic.dds",		nullptr,	m_texture4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Material.001_Mixed_AO.dds",		nullptr,	m_texture5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Material.001_Normal_DirectX.dds",nullptr,	m_texture6.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"TurboFlame_Tex.dds",				nullptr,	m_texture7.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Base_color.dds", nullptr, m_texture1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Roughness.dds", nullptr, m_texture2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Emissive.dds", nullptr, m_texture3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Metallic.dds", nullptr, m_texture4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Mixed_AO.dds", nullptr, m_texture5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Material.001_Normal_DirectX.dds", nullptr, m_texture6.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"TurboFlame_Tex.dds", nullptr, m_texture7.ReleaseAndGetAddressOf());
 
 	//Initialise Render to texture
 	m_FirstRenderPass = new RenderTexture(device, 800, 600, 1, 2);	//for our rendering, We dont use the last two properties. but.  they cant be zero and they cant be the same. 
@@ -499,24 +515,24 @@ void Game::CreateDeviceDependentResources()
 // Allocate all memory resources that change on a window SizeChanged event.
 void Game::CreateWindowSizeDependentResources()
 {
-    auto size = m_deviceResources->GetOutputSize();
-    float aspectRatio = float(size.right) / float(size.bottom);
-    float fovAngleY = 70.0f * XM_PI / 180.0f;
+	auto size = m_deviceResources->GetOutputSize();
+	float aspectRatio = float(size.right) / float(size.bottom);
+	float fovAngleY = 70.0f * XM_PI / 180.0f;
 
-    // This is a simple example of change that can be made when the app is in
-    // portrait or snapped view.
-    if (aspectRatio < 1.0f)
-    {
-        fovAngleY *= 2.0f;
-    }
+	// This is a simple example of change that can be made when the app is in
+	// portrait or snapped view.
+	if (aspectRatio < 1.0f)
+	{
+		fovAngleY *= 2.0f;
+	}
 
-    // This sample makes use of a right-handed coordinate system using row-major matrices.
-    m_projection = Matrix::CreatePerspectiveFieldOfView(
-        fovAngleY,
-        aspectRatio,
-        0.01f,
-        100.0f
-    );
+	// This sample makes use of a right-handed coordinate system using row-major matrices.
+	m_projection = Matrix::CreatePerspectiveFieldOfView(
+		fovAngleY,
+		aspectRatio,
+		0.01f,
+		100.0f
+	);
 }
 
 void Game::SetupGUI()
@@ -534,18 +550,18 @@ void Game::SetupGUI()
 
 void Game::OnDeviceLost()
 {
-    m_states.reset();
-    m_fxFactory.reset();
-    m_sprites.reset();
-    m_font.reset();
+	m_states.reset();
+	m_fxFactory.reset();
+	m_sprites.reset();
+	m_font.reset();
 	m_batch.reset();
 	m_testmodel.reset();
-    m_batchInputLayout.Reset();
+	m_batchInputLayout.Reset();
 }
 
 void Game::OnDeviceRestored()
 {
-    CreateDeviceDependentResources();
-    CreateWindowSizeDependentResources();
+	CreateDeviceDependentResources();
+	CreateWindowSizeDependentResources();
 }
 #pragma endregion

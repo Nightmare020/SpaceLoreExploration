@@ -33,13 +33,13 @@ public:
 	ModelClass();
 	~ModelClass();
 
-	bool InitializeModel(ID3D11Device *device, char* filename);
+	bool InitializeModel(ID3D11Device* device, char* filename);
 	bool InitializeTeapot(ID3D11Device*);
 	bool InitializeSphere(ID3D11Device*);
 	bool InitializeBox(ID3D11Device*, float xwidth, float yheight, float zdepth);
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
-	
+
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
 
@@ -56,7 +56,7 @@ private:
 	std::string ParseTextureFilename(const std::string& line, const std::string& token);
 
 private:
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
+	ID3D11Buffer* m_vertexBuffer, * m_indexBuffer;
 	int m_vertexCount, m_indexCount;
 
 	//arrays for our generated objects Made by directX

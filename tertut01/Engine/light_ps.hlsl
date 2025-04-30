@@ -7,12 +7,12 @@ SamplerState SampleType : register(s0);
 
 cbuffer LightBuffer : register(b0)
 {
-	float4 ambientColor;
+    float4 ambientColor;
     float4 diffuseColor;
     float3 lightPosition;
     float padding;
 	
-    float4 flameColor; // Color to use for flames
+    float4 meshColor; // Color to use for flames
     int useTexture; // 0 = no texture, 1 = use texture
     float3 padding2;
 };
@@ -22,17 +22,17 @@ struct InputType
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
-	float3 position3D : TEXCOORD2;
+    float3 position3D : TEXCOORD2;
 };
 
 float4 main(InputType input) : SV_TARGET
 {
-	float4	textureColor;
-    float3	lightDir;
-    float	lightIntensity;
-    float4	color;
+    float4 textureColor;
+    float3 lightDir;
+    float lightIntensity;
+    float4 color;
 	
-	if (useTexture == 1)
+    if (useTexture == 1)
     {
         // Invert the light direction for calculations.
         lightDir = normalize(input.position3D - lightPosition);
@@ -51,9 +51,8 @@ float4 main(InputType input) : SV_TARGET
     else
     {
         // Use solid flame color, fully emissive
-        color = flameColor;
+        color = meshColor;
     }
 
     return color;
 }
-
