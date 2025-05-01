@@ -4,7 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
-
+#include <random>
 
 //toreorganise
 #include <fstream>
@@ -43,7 +43,6 @@ Game::~Game()
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
-
 	m_input.Initialise(window);
 
 	m_deviceResources->SetWindow(window, width, height);
@@ -101,10 +100,22 @@ void Game::Initialize(HWND window, int width, int height)
 	m_spaceship = std::make_unique<Spaceship>(m_SpaceshipPosition);
 	m_spaceship->AddToWorld(m_dynamicsWorld);
 
-	// Create a planet object
+	// Create sun object
 	Vector3 sunPosition(0.0f, 0.0f, 0.0f);
 	m_sun = std::make_unique<Planet>(sunPosition, 1.0f);
 	m_sun->AddToWorld(m_dynamicsWorld);
+
+	// Create planet object
+	Vector3 orbitPlanetPos(10.0f, 0.0f, 0.0f);
+	m_planet = std::make_unique<Planet>(orbitPlanetPos, 0.5f);
+
+	// Pick a random texture
+	std::random_device rd;
+	std::mt19937 rand(rd()); // Seed with a real random value, if available
+	std::uniform_int_distribution<int> dist(0, static_cast<int>(m_allPlanetTextures.size()) - 1);
+	int textureIndex = dist(rand);
+	m_planet->SetTexture(m_allPlanetTextures[textureIndex]);
+	m_planet->AddToWorld(m_dynamicsWorld);
 
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects
@@ -420,10 +431,24 @@ void Game::Render()
 	float visualScale = radius; // Scale for rendering
 	Matrix planetWorld = Matrix::CreateScale(radius) * Matrix::CreateTranslation(planetPos);
 
-	//draw planet
-	DirectX::XMFLOAT4 planetColor(0.1f, 0.1f, 0.8f, 1.0f);
+	//draw sun
 	m_BasicShaderPair.SetShaderParameters(context, &planetWorld, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
-	m_PlanetModel.Render(context);
+	m_SunModel.Render(context);
+
+	//draw planet around the sun
+	if (m_planet)
+	{
+		btTransform orbitTransform;
+		m_planet->GetRigidBody()->getMotionState()->getWorldTransform(orbitTransform);
+		btVector3 orbitOrigin = orbitTransform.getOrigin();
+		float orbitRadius = static_cast<btSphereShape*>(m_planet->GetRigidBody()->getCollisionShape())->getRadius();
+
+		Vector3 orbitPos(orbitOrigin.getX(), orbitOrigin.getY(), orbitOrigin.getZ());
+		Matrix orbitWorld = Matrix::CreateScale(orbitRadius) * Matrix::CreateTranslation(orbitPos);
+
+		m_BasicShaderPair.SetShaderParameters(context, &planetWorld, &m_view, &m_projection, &m_Light, m_planet->GetTexture().Get(), true);
+		m_PlanetModel.Render(context);
+	}
 
 	//draw planet halo
 	DirectX::XMFLOAT4 planetHaloColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -549,6 +574,7 @@ void Game::CreateDeviceDependentResources()
 	m_TurboFlameRightModel.InitializeModel(device, "FuelTurboFlameRight.obj");
 
 	// Initialize planet
+	m_SunModel.InitializeModel(device, "Planet.obj");
 	m_PlanetModel.InitializeModel(device, "Planet.obj");
 	m_PlanetHaloModel.InitializeModel(device, "PlanetHalo.obj");
 
@@ -639,6 +665,79 @@ void Game::CreateDeviceDependentResources()
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_03-1024x512.dds", nullptr, m_textureTundra4.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_04-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_05-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
+
+	m_allPlanetTextures = {
+		m_textureArid1.Get(),
+		m_textureArid2.Get(),
+		m_textureArid3.Get(),
+		m_textureArid4.Get(),
+		m_textureArid5.Get(),
+		m_textureBaren1.Get(),
+		m_textureBaren2.Get(),
+		m_textureBaren3.Get(),
+		m_textureBaren4.Get(),
+		m_textureBaren5.Get(),
+		m_textureDusty1.Get(),
+		m_textureDusty2.Get(),
+		m_textureDusty3.Get(),
+		m_textureDusty4.Get(),
+		m_textureDusty5.Get(),
+		m_textureGaseous1.Get(),
+		m_textureGaseous2.Get(),
+		m_textureGaseous3.Get(),
+		m_textureGaseous4.Get(),
+		m_textureGaseous5.Get(),
+		m_textureGaseous6.Get(),
+		m_textureGaseous7.Get(),
+		m_textureGaseous8.Get(),
+		m_textureGaseous9.Get(),
+		m_textureGaseous10.Get(),
+		m_textureGaseous11.Get(),
+		m_textureGaseous12.Get(),
+		m_textureGaseous13.Get(),
+		m_textureGaseous14.Get(),
+		m_textureGaseous15.Get(),
+		m_textureGaseous16.Get(),
+		m_textureGaseous17.Get(),
+		m_textureGaseous18.Get(),
+		m_textureGaseous19.Get(),
+		m_textureGaseous20.Get(),
+		m_textureGrassland1.Get(),
+		m_textureGrassland2.Get(),
+		m_textureGrassland3.Get(),
+		m_textureGrassland4.Get(),
+		m_textureGrassland5.Get(),
+		m_textureJungle1.Get(),
+		m_textureJungle2.Get(),
+		m_textureJungle3.Get(),
+		m_textureJungle4.Get(),
+		m_textureJungle5.Get(),
+		m_textureMarshy1.Get(),
+		m_textureMarshy2.Get(),
+		m_textureMarshy3.Get(),
+		m_textureMarshy4.Get(),
+		m_textureMarshy5.Get(),
+		m_textureMethane1.Get(),
+		m_textureMethane2.Get(),
+		m_textureMethane3.Get(),
+		m_textureMethane4.Get(),
+		m_textureMethane5.Get(),
+		m_textureSandy1.Get(),
+		m_textureSandy2.Get(),
+		m_textureSandy3.Get(),
+		m_textureSandy4.Get(),
+		m_textureSandy5.Get(),
+		m_textureSnowy1.Get(),
+		m_textureSnowy2.Get(),
+		m_textureSnowy3.Get(),
+		m_textureSnowy4.Get(),
+		m_textureSnowy5.Get(),
+		m_textureTundra1.Get(),
+		m_textureTundra2.Get(),
+		m_textureTundra3.Get(),
+		m_textureTundra4.Get(),
+		m_textureTundra5.Get()
+	};
 
 	//Initialise Render to texture
 	m_FirstRenderPass = new RenderTexture(device, 800, 600, 1, 2);	//for our rendering, We dont use the last two properties. but.  they cant be zero and they cant be the same. 

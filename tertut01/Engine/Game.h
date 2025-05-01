@@ -191,6 +191,7 @@ private:
     ModelClass																m_SpaceShipModel;
     ModelClass																m_TurboFlameLeftModel;
     ModelClass																m_TurboFlameRightModel;
+    ModelClass																m_SunModel;
     ModelClass																m_PlanetModel;
     ModelClass																m_PlanetHaloModel;
 
@@ -237,5 +238,7 @@ private:
 
 	std::unique_ptr<Spaceship>                                              m_spaceship;
 	std::unique_ptr<Planet>                                                 m_sun;
+
+    std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>           m_allPlanetTextures;
 	std::unique_ptr<Planet>                                                 m_planet;
 };
