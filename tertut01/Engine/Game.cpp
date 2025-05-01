@@ -103,7 +103,7 @@ void Game::Initialize(HWND window, int width, int height)
 
 	// Create a planet object
 	Vector3 sunPosition(0.0f, 0.0f, 0.0f);
-	m_sun = std::make_unique<Planet>(sunPosition, 10.0f);
+	m_sun = std::make_unique<Planet>(sunPosition, 1.0f);
 	m_sun->AddToWorld(m_dynamicsWorld);
 
 #ifdef DXTK_AUDIO
@@ -407,9 +407,22 @@ void Game::Render()
 		m_TurboFlameRightModel.Render(context);
 	}
 
+	// Get transform from Bullet for the planet
+	btTransform transform;
+	m_sun->GetRigidBody()->getMotionState()->getWorldTransform(transform);
+	btVector3 origin = transform.getOrigin();
+
+	// Get planet radius from its shape
+	float radius = static_cast<btSphereShape*>(m_sun->GetRigidBody()->getCollisionShape())->getRadius();
+
+	// Build planet world matrix from physics position and scale
+	Vector3 planetPos(origin.getX(), origin.getY(), origin.getZ());
+	float visualScale = radius; // Scale for rendering
+	Matrix planetWorld = Matrix::CreateScale(radius) * Matrix::CreateTranslation(planetPos);
+
 	//draw planet
 	DirectX::XMFLOAT4 planetColor(0.1f, 0.1f, 0.8f, 1.0f);
-	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
+	m_BasicShaderPair.SetShaderParameters(context, &planetWorld, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
 	m_PlanetModel.Render(context);
 
 	//draw planet halo
