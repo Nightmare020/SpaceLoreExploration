@@ -95,7 +95,16 @@ void Game::Initialize(HWND window, int width, int height)
 	m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
 	m_solver = new btSequentialImpulseConstraintSolver();
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
-	m_dynamicsWorld->setGravity(btVector3(0, -9.81f, 0));
+	m_dynamicsWorld->setGravity(btVector3(0, 0, 0));
+
+	// Create a spaceship object
+	m_spaceship = std::make_unique<Spaceship>(m_SpaceshipPosition);
+	m_spaceship->AddToWorld(m_dynamicsWorld);
+
+	// Create a planet object
+	Vector3 sunPosition(0.0f, 0.0f, 0.0f);
+	m_sun = std::make_unique<Planet>(sunPosition, 10.0f);
+	m_sun->AddToWorld(m_dynamicsWorld);
 
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects
@@ -237,8 +246,8 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		// -- Gameplay Mode: Control the spaceship --
 
-		const float moveSpeed = 0.1f;
-		const float rotationSpeed = 2.5f; // degrees per frame
+		btVector3 velocity = m_spaceship->GetRigidBody()->getLinearVelocity();
+		float speed = velocity.length();
 
 		// Detect movement to show flames
 		m_showFlames = m_gameInputCommands.forward || m_gameInputCommands.left || m_gameInputCommands.right;
@@ -246,41 +255,59 @@ void Game::Update(DX::StepTimer const& timer)
 		if (m_gameInputCommands.forward)
 		{
 			// Move spaceship forward in its current facing direction
-			m_SpaceshipPosition.x += sinf(XMConvertToRadians(m_SpaceshipRotation)) * moveSpeed;
-			m_SpaceshipPosition.z += cosf(XMConvertToRadians(m_SpaceshipRotation)) * moveSpeed;
+			m_spaceship->ApplyThrust(30.0f);
 		}
-
+		if (m_gameInputCommands.back)
+		{
+			// Move spaceship backward
+			m_spaceship->Brake(30.0f);
+		}
 		if (m_gameInputCommands.left)
 		{
-			m_SpaceshipRotation += rotationSpeed; // Rotate left
+			if (speed < 0.1f)
+			{
+				m_spaceship->ForceRotateInPlace(0.5f); // Rotate in place
+			}
+			else
+			{
+				m_spaceship->ApplyRotation(5.0f); // Rotate left
+			}
+
 		}
 		if (m_gameInputCommands.right)
 		{
-			m_SpaceshipRotation -= rotationSpeed; // Rotate right
+			if (speed < 0.1f)
+			{
+				m_spaceship->ForceRotateInPlace(-0.5f); // Rotate in place
+			}
+			else
+			{
+				m_spaceship->ApplyRotation(-5.0f); // Rotate right
+			}
 		}
 
-		// Update spaceship world matrix
-		m_spaceShipWorld = Matrix::CreateRotationY(XMConvertToRadians(m_SpaceshipRotation)) *
-			Matrix::CreateTranslation(m_SpaceshipPosition);
+		// Step simulation
+		m_dynamicsWorld->stepSimulation(timer.GetElapsedSeconds(), 10);
+
+		// Update spaceship to sync graphics
+		m_spaceship->UpdateTransform();
 
 		// Update camera to follow spaceship
+		Vector3 spaceshipPos = m_spaceship->GetPosition();
+		Matrix rotationMatrix = Matrix::CreateRotationY(XMConvertToRadians(m_spaceship->GetRotation()));
 		Vector3 cameraOffset = Vector3(0.0f, 50.0f, -20.0f); // Slightly behind and above
-		Matrix rotationMatrix = Matrix::CreateRotationY(XMConvertToRadians(m_SpaceshipRotation));
-		Vector3 cameraPosition = m_SpaceshipPosition + Vector3::Transform(cameraOffset, rotationMatrix);
+		Vector3 cameraPosition = spaceshipPos + Vector3::Transform(cameraOffset, rotationMatrix);
 
 		m_Camera01.setPosition(cameraPosition);
 
 		// Look at spaceship
-		Vector3 lookAtTarget = m_SpaceshipPosition;
-		Vector3 direction = lookAtTarget - cameraPosition;
+		Vector3 direction = spaceshipPos - cameraPosition;
 		direction.Normalize();
 
 		float pitch = asinf(direction.y);
 		float yaw = atan2f(direction.x, direction.z);
 
 		m_Camera01.setRotation(Vector3(pitch, yaw, 0.0f));
-
-		m_world = m_spaceShipWorld;
 	}
 
 	m_Camera01.Update();	//camera update.
@@ -358,9 +385,11 @@ void Game::Render()
 	//flame color
 	DirectX::XMFLOAT4 flameColor(1.0f, 0.2f, 0.2f, 1.0f);
 
+	Matrix spaceshipMatrix = m_spaceship->GetWorldMatrix();
+
 	if (m_gameStarted)
 	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), true);
+		m_BasicShaderPair.SetShaderParameters(context, &spaceshipMatrix, &m_view, &m_projection, &m_Light, m_SpaceShipModel.GetTexture(), true);
 	}
 	else
 	{
@@ -373,7 +402,7 @@ void Game::Render()
 	//draw flames if moving
 	if (m_showFlames)
 	{
-		m_BasicShaderPair.SetShaderParameters(context, &m_spaceShipWorld, &m_view, &m_projection, &m_Light, nullptr, false, flameColor);
+		m_BasicShaderPair.SetShaderParameters(context, &spaceshipMatrix, &m_view, &m_projection, &m_Light, nullptr, false, flameColor);
 		m_TurboFlameLeftModel.Render(context);
 		m_TurboFlameRightModel.Render(context);
 	}

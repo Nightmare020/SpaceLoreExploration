@@ -10,4 +10,6 @@ Planet::Planet(const DirectX::SimpleMath::Vector3& pos, float radius)
 	m_motionState = new btDefaultMotionState(startTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, m_motionState, m_collisionShape);
 	m_rigidBody = new btRigidBody(rbInfo);
+	m_rigidBody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+	m_rigidBody->setActivationState(DISABLE_DEACTIVATION); // So it keeps simulating
 }

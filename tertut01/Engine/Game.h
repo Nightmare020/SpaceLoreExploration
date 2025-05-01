@@ -11,7 +11,8 @@
 #include "Input.h"
 #include "Camera.h"
 #include "RenderTexture.h"
-
+#include "Spaceship.h"
+#include "Planet.h"
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 
@@ -233,4 +234,8 @@ private:
 	btDefaultCollisionConfiguration*                                        m_collisionConfiguration = nullptr;
 	btCollisionDispatcher*                                                  m_dispatcher = nullptr;
 	btSequentialImpulseConstraintSolver*                                    m_solver = nullptr;
+
+	std::unique_ptr<Spaceship>                                              m_spaceship;
+	std::unique_ptr<Planet>                                                 m_sun;
+	std::unique_ptr<Planet>                                                 m_planet;
 };

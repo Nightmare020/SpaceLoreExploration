@@ -8,6 +8,10 @@ public:
 
 	void ApplyThrust(float force);
 	void ApplyRotation(float torque);
-	DirectX::SimpleMath::Matrix GetWorldMatrix() const;
+	void ForceRotateInPlace(float degrees);
+	void Brake(float amount);
+
+	DirectX::SimpleMath::Vector3 GetPosition() const;
+	float GetRotation() const;
 };
 
