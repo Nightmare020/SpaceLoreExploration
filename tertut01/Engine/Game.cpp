@@ -85,8 +85,8 @@ void Game::Initialize(HWND window, int width, int height)
 	m_Camera01.setRotation(Vector3(-90.0f, -180.0f, 0.0f));	//orientation is -90 becuase zero will be looking up at the sky straight up. 
 
 	// setup spaceship movement
-	m_SpaceshipPosition = Vector3(0.0f, 0.0f, 0.0f);
-	m_SpaceshipRotation = 0.0f;
+	m_SpaceshipPosition = Vector3(0.0f, 0.0f, -70.0f);
+	m_SpaceshipRotation = 60.0f;
 	m_showFlames = false;
 
 	//setup physics
