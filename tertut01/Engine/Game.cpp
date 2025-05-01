@@ -26,6 +26,12 @@ Game::Game() noexcept(false)
 
 Game::~Game()
 {
+	delete m_dynamicsWorld;
+	delete m_solver;
+	delete m_dispatcher;
+	delete m_collisionConfiguration;
+	delete m_broadphase;
+
 #ifdef DXTK_AUDIO
 	if (m_audEngine)
 	{
@@ -82,6 +88,14 @@ void Game::Initialize(HWND window, int width, int height)
 	m_SpaceshipPosition = Vector3(0.0f, 0.0f, 0.0f);
 	m_SpaceshipRotation = 0.0f;
 	m_showFlames = false;
+
+	//setup physics
+	m_broadphase = new btDbvtBroadphase();
+	m_collisionConfiguration = new btDefaultCollisionConfiguration();
+	m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
+	m_solver = new btSequentialImpulseConstraintSolver();
+	m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
+	m_dynamicsWorld->setGravity(btVector3(0, -9.81f, 0));
 
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects
@@ -507,82 +521,82 @@ void Game::CreateDeviceDependentResources()
 	CreateDDSTextureFromFile(device, L"Material.001_Mixed_AO.dds", nullptr, m_texture5.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Material.001_Normal_DirectX.dds", nullptr, m_texture6.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Solarsystemscope_texture_2k_sun.dds", nullptr, m_textureSun.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Arid_01-1024x512.dds", nullptr, m_textureArid1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Arid_02-1024x512.dds", nullptr, m_textureArid2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Arid_03-1024x512.dds", nullptr, m_textureArid3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Arid_04-1024x512.dds", nullptr, m_textureArid4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Arid_05-1024x512.dds", nullptr, m_textureArid5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Barren_01-1024x512.dds", nullptr, m_textureBaren1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Barren_02-1024x512.dds", nullptr, m_textureBaren2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Barren_03-1024x512.dds", nullptr, m_textureBaren3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Barren_04-1024x512.dds", nullptr, m_textureBaren4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Barren_05-1024x512.dds", nullptr, m_textureBaren5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Dusty_01-1024x512.dds", nullptr, m_textureDusty1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Dusty_02-1024x512.dds", nullptr, m_textureDusty2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Dusty_03-1024x512.dds", nullptr, m_textureDusty3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Dusty_04-1024x512.dds", nullptr, m_textureDusty4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Dusty_05-1024x512.dds", nullptr, m_textureDusty5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_01-1024x512.dds", nullptr, m_textureGaseous1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_02-1024x512.dds", nullptr, m_textureGaseous2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_03-1024x512.dds", nullptr, m_textureGaseous3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_04-1024x512.dds", nullptr, m_textureGaseous4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_05-1024x512.dds", nullptr, m_textureGaseous5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_06-1024x512.dds", nullptr, m_textureGaseous6.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_07-1024x512.dds", nullptr, m_textureGaseous7.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_08-1024x512.dds", nullptr, m_textureGaseous8.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_09-1024x512.dds", nullptr, m_textureGaseous9.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_10-1024x512.dds", nullptr, m_textureGaseous10.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_11-1024x512.dds", nullptr, m_textureGaseous11.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_12-1024x512.dds", nullptr, m_textureGaseous12.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_13-1024x512.dds", nullptr, m_textureGaseous13.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_14-1024x512.dds", nullptr, m_textureGaseous14.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_15-1024x512.dds", nullptr, m_textureGaseous15.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_16-1024x512.dds", nullptr, m_textureGaseous16.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_17-1024x512.dds", nullptr, m_textureGaseous17.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_18-1024x512.dds", nullptr, m_textureGaseous18.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_19-1024x512.dds", nullptr, m_textureGaseous19.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Gaseous_20-1024x512.dds", nullptr, m_textureGaseous20.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Grassland_01-1024x512.dds", nullptr, m_textureGrassland1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Grassland_02-1024x512.dds", nullptr, m_textureGrassland2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Grassland_03-1024x512.dds", nullptr, m_textureGrassland3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Grassland_04-1024x512.dds", nullptr, m_textureGrassland4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Grassland_05-1024x512.dds", nullptr, m_textureGrassland5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Jungle_01-1024x512.dds", nullptr, m_textureJungle1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Jungle_02-1024x512.dds", nullptr, m_textureJungle2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Jungle_03-1024x512.dds", nullptr, m_textureJungle3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Jungle_04-1024x512.dds", nullptr, m_textureJungle4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Jungle_05-1024x512.dds", nullptr, m_textureJungle5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Marshy_01-1024x512.dds", nullptr, m_textureMarshy1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Marshy_02-1024x512.dds", nullptr, m_textureMarshy2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Marshy_03-1024x512.dds", nullptr, m_textureMarshy3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Marshy_04-1024x512.dds", nullptr, m_textureMarshy4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Marshy_05-1024x512.dds", nullptr, m_textureMarshy5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Martian_01-1024x512.dds", nullptr, m_textureMartian1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Martian_02-1024x512.dds", nullptr, m_textureMartian2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Martian_03-1024x512.dds", nullptr, m_textureMartian3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Martian_04-1024x512.dds", nullptr, m_textureMartian4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Martian_05-1024x512.dds", nullptr, m_textureMartian5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Methane_01-1024x512.dds", nullptr, m_textureMethane1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Methane_02-1024x512.dds", nullptr, m_textureMethane2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Methane_03-1024x512.dds", nullptr, m_textureMethane3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Methane_04-1024x512.dds", nullptr, m_textureMethane4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Methane_05-1024x512.dds", nullptr, m_textureMethane5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Sandy_01-1024x512.dds", nullptr, m_textureSandy1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Sandy_02-1024x512.dds", nullptr, m_textureSandy2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Sandy_03-1024x512.dds", nullptr, m_textureSandy3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Sandy_04-1024x512.dds", nullptr, m_textureSandy4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Sandy_05-1024x512.dds", nullptr, m_textureSandy5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Snowy_01-1024x512.dds", nullptr, m_textureSnowy1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Snowy_02-1024x512.dds", nullptr, m_textureSnowy2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Snowy_03-1024x512.dds", nullptr, m_textureSnowy3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Snowy_04-1024x512.dds", nullptr, m_textureSnowy4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Snowy_04-1024x512.dds", nullptr, m_textureSnowy5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Snowy_05-1024x512.dds", nullptr, m_textureTundra1.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Tundra_01-1024x512.dds", nullptr, m_textureTundra2.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Tundra_02-1024x512.dds", nullptr, m_textureTundra3.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Tundra_03-1024x512.dds", nullptr, m_textureTundra4.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Tundra_04-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Tundra_05-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Arid/Arid_01-1024x512.dds", nullptr, m_textureArid1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Arid/Arid_02-1024x512.dds", nullptr, m_textureArid2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Arid/Arid_03-1024x512.dds", nullptr, m_textureArid3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Arid/Arid_04-1024x512.dds", nullptr, m_textureArid4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Arid/Arid_05-1024x512.dds", nullptr, m_textureArid5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Barren/Barren_01-1024x512.dds", nullptr, m_textureBaren1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Barren/Barren_02-1024x512.dds", nullptr, m_textureBaren2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Barren/Barren_03-1024x512.dds", nullptr, m_textureBaren3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Barren/Barren_04-1024x512.dds", nullptr, m_textureBaren4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Barren/Barren_05-1024x512.dds", nullptr, m_textureBaren5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Dusty/Dusty_01-1024x512.dds", nullptr, m_textureDusty1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Dusty/Dusty_02-1024x512.dds", nullptr, m_textureDusty2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Dusty/Dusty_03-1024x512.dds", nullptr, m_textureDusty3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Dusty/Dusty_04-1024x512.dds", nullptr, m_textureDusty4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Dusty/Dusty_05-1024x512.dds", nullptr, m_textureDusty5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_01-1024x512.dds", nullptr, m_textureGaseous1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_02-1024x512.dds", nullptr, m_textureGaseous2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_03-1024x512.dds", nullptr, m_textureGaseous3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_04-1024x512.dds", nullptr, m_textureGaseous4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_05-1024x512.dds", nullptr, m_textureGaseous5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_06-1024x512.dds", nullptr, m_textureGaseous6.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_07-1024x512.dds", nullptr, m_textureGaseous7.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_08-1024x512.dds", nullptr, m_textureGaseous8.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_09-1024x512.dds", nullptr, m_textureGaseous9.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_10-1024x512.dds", nullptr, m_textureGaseous10.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_11-1024x512.dds", nullptr, m_textureGaseous11.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_12-1024x512.dds", nullptr, m_textureGaseous12.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_13-1024x512.dds", nullptr, m_textureGaseous13.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_14-1024x512.dds", nullptr, m_textureGaseous14.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_15-1024x512.dds", nullptr, m_textureGaseous15.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_16-1024x512.dds", nullptr, m_textureGaseous16.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_17-1024x512.dds", nullptr, m_textureGaseous17.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_18-1024x512.dds", nullptr, m_textureGaseous18.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_19-1024x512.dds", nullptr, m_textureGaseous19.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Gaseous/Gaseous_20-1024x512.dds", nullptr, m_textureGaseous20.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Grassland/Grassland_01-1024x512.dds", nullptr, m_textureGrassland1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Grassland/Grassland_02-1024x512.dds", nullptr, m_textureGrassland2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Grassland/Grassland_03-1024x512.dds", nullptr, m_textureGrassland3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Grassland/Grassland_04-1024x512.dds", nullptr, m_textureGrassland4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Grassland/Grassland_05-1024x512.dds", nullptr, m_textureGrassland5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Jungle/Jungle_01-1024x512.dds", nullptr, m_textureJungle1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Jungle/Jungle_02-1024x512.dds", nullptr, m_textureJungle2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Jungle/Jungle_03-1024x512.dds", nullptr, m_textureJungle3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Jungle/Jungle_04-1024x512.dds", nullptr, m_textureJungle4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Jungle/Jungle_05-1024x512.dds", nullptr, m_textureJungle5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Marshy/Marshy_01-1024x512.dds", nullptr, m_textureMarshy1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Marshy/Marshy_02-1024x512.dds", nullptr, m_textureMarshy2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Marshy/Marshy_03-1024x512.dds", nullptr, m_textureMarshy3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Marshy/Marshy_04-1024x512.dds", nullptr, m_textureMarshy4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Marshy/Marshy_05-1024x512.dds", nullptr, m_textureMarshy5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Martian/Martian_01-1024x512.dds", nullptr, m_textureMartian1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Martian/Martian_02-1024x512.dds", nullptr, m_textureMartian2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Martian/Martian_03-1024x512.dds", nullptr, m_textureMartian3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Martian/Martian_04-1024x512.dds", nullptr, m_textureMartian4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Martian/Martian_05-1024x512.dds", nullptr, m_textureMartian5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Methane/Methane_01-1024x512.dds", nullptr, m_textureMethane1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Methane/Methane_02-1024x512.dds", nullptr, m_textureMethane2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Methane/Methane_03-1024x512.dds", nullptr, m_textureMethane3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Methane/Methane_04-1024x512.dds", nullptr, m_textureMethane4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Methane/Methane_05-1024x512.dds", nullptr, m_textureMethane5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Sandy/Sandy_01-1024x512.dds", nullptr, m_textureSandy1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Sandy/Sandy_02-1024x512.dds", nullptr, m_textureSandy2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Sandy/Sandy_03-1024x512.dds", nullptr, m_textureSandy3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Sandy/Sandy_04-1024x512.dds", nullptr, m_textureSandy4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Sandy/Sandy_05-1024x512.dds", nullptr, m_textureSandy5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Snowy/Snowy_01-1024x512.dds", nullptr, m_textureSnowy1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Snowy/Snowy_02-1024x512.dds", nullptr, m_textureSnowy2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Snowy/Snowy_03-1024x512.dds", nullptr, m_textureSnowy3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Snowy/Snowy_04-1024x512.dds", nullptr, m_textureSnowy4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Snowy/Snowy_04-1024x512.dds", nullptr, m_textureSnowy5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Snowy/Snowy_05-1024x512.dds", nullptr, m_textureTundra1.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_01-1024x512.dds", nullptr, m_textureTundra2.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_02-1024x512.dds", nullptr, m_textureTundra3.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_03-1024x512.dds", nullptr, m_textureTundra4.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_04-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_05-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
 
 	//Initialise Render to texture
 	m_FirstRenderPass = new RenderTexture(device, 800, 600, 1, 2);	//for our rendering, We dont use the last two properties. but.  they cant be zero and they cant be the same. 

@@ -12,7 +12,8 @@
 #include "Camera.h"
 #include "RenderTexture.h"
 
-
+#include <btBulletCollisionCommon.h>
+#include <btBulletDynamicsCommon.h>
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -225,4 +226,11 @@ private:
     bool 																    m_showFlames;
     DirectX::SimpleMath::Matrix											    m_flameLeftWorld;
     DirectX::SimpleMath::Matrix											    m_flameRightWorld;
+
+    // PHYSICS
+	btDiscreteDynamicsWorld*                                                m_dynamicsWorld = nullptr;
+	btBroadphaseInterface*                                                  m_broadphase = nullptr;
+	btDefaultCollisionConfiguration*                                        m_collisionConfiguration = nullptr;
+	btCollisionDispatcher*                                                  m_dispatcher = nullptr;
+	btSequentialImpulseConstraintSolver*                                    m_solver = nullptr;
 };

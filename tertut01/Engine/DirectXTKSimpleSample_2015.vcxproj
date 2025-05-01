@@ -112,12 +112,13 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalIncludeDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;odbccp32.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;odbccp32.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;BulletSoftBody_Debug.lib;BulletInverseDynamics_Debug.lib;Bullet3Common_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Alejandro Vazquez\Documents\Github\SpaceLoreExploration\tertut01\Engine\bullet3-master\build\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -183,9 +184,12 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="modelclass.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="Planet.h" />
     <ClInclude Include="ReadData.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Spaceship.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -208,8 +212,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Spaceship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
