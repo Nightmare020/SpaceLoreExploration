@@ -131,6 +131,8 @@ void Game::Initialize(HWND window, int width, int height)
 	m_planet->SetTexture(m_allPlanetTextures[textureIndex]);
 	m_planet->AddToWorld(m_dynamicsWorld);
 
+	// Create the procedural planetary system
+
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects
 	AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
@@ -286,7 +288,7 @@ void Game::Update(DX::StepTimer const& timer)
 			}
 			else
 			{
-				m_spaceship->ApplyRotation(5.0f); // Rotate left
+				m_spaceship->ApplyRotation(25.0f); // Rotate left
 			}
 
 		}
@@ -298,7 +300,7 @@ void Game::Update(DX::StepTimer const& timer)
 			}
 			else
 			{
-				m_spaceship->ApplyRotation(-5.0f); // Rotate right
+				m_spaceship->ApplyRotation(-25.0f); // Rotate right
 			}
 		}
 
@@ -804,8 +806,8 @@ void Game::CreateWindowSizeDependentResources()
 	m_projection = Matrix::CreatePerspectiveFieldOfView(
 		fovAngleY,
 		aspectRatio,
-		0.01f,
-		100.0f
+		0.1f,
+		1000.0f
 	);
 }
 

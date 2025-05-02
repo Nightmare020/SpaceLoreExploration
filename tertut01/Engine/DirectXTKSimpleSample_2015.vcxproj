@@ -186,6 +186,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="PlanetarySystem.h" />
     <ClInclude Include="ReadData.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Shader.h" />
@@ -214,6 +215,7 @@
     </ClCompile>
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlanetarySystem.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Spaceship.cpp" />

@@ -17,6 +17,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{3c58041a-80fe-4eca-9484-d1b26791e9ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Procedural">
+      <UniqueIdentifier>{94387ea0-8fe4-4109-9347-1b28a3211d08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Spaceship.h" />
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="PlanetarySystem.h">
+      <Filter>Procedural</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -120,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlanetarySystem.cpp">
+      <Filter>Procedural</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

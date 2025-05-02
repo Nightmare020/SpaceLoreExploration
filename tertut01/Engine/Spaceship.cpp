@@ -37,7 +37,7 @@ void Spaceship::ApplyRotation(float torque)
 	btVector3 desiredVelocity = forwardDir * velocity.length();
 
 	// Smoothly adjust velocity toward facing direction
-	btVector3 steeringForce = (desiredVelocity - velocity) * 0.1f;
+	btVector3 steeringForce = (desiredVelocity - velocity) * 50.0f;
 	m_rigidBody->applyCentralForce(steeringForce);
 
 	// Clamp angular velocity to prevent over-rotation

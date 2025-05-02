@@ -13,6 +13,7 @@
 #include "RenderTexture.h"
 #include "Spaceship.h"
 #include "Planet.h"
+#include "PlanetarySystem.h"
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 
@@ -242,6 +243,7 @@ private:
 
     std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>           m_allPlanetTextures;
 	std::unique_ptr<Planet>                                                 m_planet;
+	std::unique_ptr<PlanetarySystem>                                        m_planetarySystem;
 
 	float 																    m_orbitRadius = 10.0f;
     float                                                                   m_ellipseA = 105.0f; // semi-major axis (X)
