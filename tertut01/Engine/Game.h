@@ -102,6 +102,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture4;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture5;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture6;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureStars;
 
     /** PLANETS TEXTURES **/
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureSun;
@@ -180,7 +181,6 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra3;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra4;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra5;
-    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureStars;
 
     //Shaders
     Shader																	m_BasicShaderPair;

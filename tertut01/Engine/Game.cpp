@@ -405,19 +405,19 @@ void Game::Render()
 
 	Clear();
 
-	//m_sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+	m_sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
 
-	//// Draw fullscreen sprite
-	//m_sprites->Draw(m_textureStars.Get(),
-	//	XMFLOAT2(0, 0),
-	//	nullptr,
-	//	Colors::White,
-	//	0.0f,
-	//	XMFLOAT2(0, 0),
-	//	XMFLOAT2(float(m_deviceResources->GetOutputSize().right) / 1920.0f,
-	//		float(m_deviceResources->GetOutputSize().bottom) / 1080.0f));
+	// Draw fullscreen sprite
+	m_sprites->Draw(m_textureStars.Get(),
+		XMFLOAT2(0, 0),
+		nullptr,
+		Colors::White,
+		0.0f,
+		XMFLOAT2(0, 0),
+		XMFLOAT2(float(m_deviceResources->GetOutputSize().right) / 1920.0f,
+			float(m_deviceResources->GetOutputSize().bottom) / 1080.0f));
 
-	//m_sprites->End();
+	m_sprites->End();
 
 	m_deviceResources->PIXBeginEvent(L"Render");
 	auto context = m_deviceResources->GetD3DDeviceContext();
@@ -630,6 +630,7 @@ void Game::CreateDeviceDependentResources()
 	CreateDDSTextureFromFile(device, L"Material.001_Emissive.dds", nullptr, m_texture3.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Material.001_Metallic.dds", nullptr, m_texture4.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Material.001_Mixed_AO.dds", nullptr, m_texture5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Stars_bg.dds", nullptr, m_textureStars.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Material.001_Normal_DirectX.dds", nullptr, m_texture6.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Solarsystemscope_texture_2k_sun.dds", nullptr, m_textureSun.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Arid/Arid_01-1024x512.dds", nullptr, m_textureArid1.ReleaseAndGetAddressOf());
@@ -707,8 +708,6 @@ void Game::CreateDeviceDependentResources()
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_02-1024x512.dds", nullptr, m_textureTundra3.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_03-1024x512.dds", nullptr, m_textureTundra4.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_04-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_05-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
-	CreateDDSTextureFromFile(device, L"Stars_bg.dds", nullptr, m_textureStars.ReleaseAndGetAddressOf());
 
 	m_allPlanetTextures = {
 		m_textureArid1.Get(),
