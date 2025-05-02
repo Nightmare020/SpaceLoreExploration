@@ -14,13 +14,14 @@
 class PlanetarySystem
 {
 public:
-	PlanetarySystem(btDiscreteDynamicsWorld* dynamicsWorld, std::vector<ID3D11ShaderResourceView*>& textures,
+	PlanetarySystem(btDiscreteDynamicsWorld* dynamicsWorld, 
+		const std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures,
 		const DirectX::SimpleMath::Vector3& orbitCenter);
 
 	void Initialize(size_t planetCount);
 	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection, Light light,
-		Shader& shader, ModelClass& planetModel);
+		Shader& shader, ModelClass& planetModel, ModelClass& haloModel);
 
 private:
 	struct OrbitingPlanet
@@ -34,7 +35,7 @@ private:
 	};
 
 	btDiscreteDynamicsWorld* m_DynamicsWorld;
-	std::vector<ID3D11ShaderResourceView*>& m_Textures;
+	const std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& m_Textures;
 	DirectX::SimpleMath::Vector3 m_OrbitCenter;
 
 	std::vector<OrbitingPlanet> m_Planets;

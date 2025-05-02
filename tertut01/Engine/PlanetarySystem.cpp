@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "PlanetarySystem.h"
 
-PlanetarySystem::PlanetarySystem(btDiscreteDynamicsWorld* dynamicsWorld, std::vector<ID3D11ShaderResourceView*>& textures, const DirectX::SimpleMath::Vector3& orbitCenter)
+PlanetarySystem::PlanetarySystem(btDiscreteDynamicsWorld* dynamicsWorld, 
+	const std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures, const DirectX::SimpleMath::Vector3& orbitCenter)
 	: m_DynamicsWorld(dynamicsWorld), m_Textures(textures), m_OrbitCenter(orbitCenter)
 {
 	std::random_device rd;
@@ -30,7 +31,7 @@ void PlanetarySystem::Initialize(size_t planetCount)
 
 		// Assign random texture
 		int textureIndex = GetRandomInt(0, static_cast<int>(m_Textures.size()) - 1);
-		planet->SetTexture(m_Textures[textureIndex]);
+		planet->SetTexture(m_Textures[textureIndex].Get());
 		planet->AddToWorld(m_DynamicsWorld);
 
 		OrbitingPlanet orbitingPlanet;
@@ -69,7 +70,8 @@ void PlanetarySystem::Update(float deltaTime)
 	}
 }
 
-void PlanetarySystem::Render(ID3D11DeviceContext* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection, Light light, Shader& shader, ModelClass& planetModel)
+void PlanetarySystem::Render(ID3D11DeviceContext* context, DirectX::SimpleMath::Matrix view, 
+	DirectX::SimpleMath::Matrix projection, Light light, Shader& shader, ModelClass& planetModel, ModelClass& haloModel)
 {
 	for (auto& orbitingPlanet : m_Planets)
 	{
@@ -85,6 +87,16 @@ void PlanetarySystem::Render(ID3D11DeviceContext* context, DirectX::SimpleMath::
 
 		shader.SetShaderParameters(context, &planetWorld, &view, &projection, &light, orbitingPlanet.planet->GetTexture().Get(), true);
 		planetModel.Render(context);
+
+		// Orbit halo
+		float orbitScale = orbitingPlanet.orbitRadius;
+
+		// Slightly higher Y so it doesn't Z-Fight with the planet
+		DirectX::SimpleMath::Matrix haloWorld = DirectX::SimpleMath::Matrix::CreateScale(orbitScale, 1.0f, orbitScale) * 
+			DirectX::SimpleMath::Matrix::CreateTranslation(m_OrbitCenter + DirectX::SimpleMath::Vector3(0, 0.1f, 0));
+		DirectX::XMFLOAT4 haloColor(1.0f, 1.0f, 1.0f, 0.15f); // light white translucent
+		shader.SetShaderParameters(context, &haloWorld, &view, &projection, &light, nullptr, false, haloColor);
+		haloModel.Render(context);
 	}
 }
 

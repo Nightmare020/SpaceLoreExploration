@@ -107,31 +107,33 @@ void Game::Initialize(HWND window, int width, int height)
 	m_sun->AddToWorld(m_dynamicsWorld);
 
 	// Create planet object
-	float semiMajorAxis = 103.0f; // X axis
-	float semiMinorAxis = 99.0f; // Z axis
+	//float semiMajorAxis = 103.0f; // X axis
+	//float semiMinorAxis = 99.0f; // Z axis
 
-	std::random_device rd;
-	std::mt19937 rng(rd()); // Seed with a real random value, if available
+	//std::random_device rd;
+	//std::mt19937 rng(rd()); // Seed with a real random value, if available
 
-	// Random angle between 0 and 2*PI
-	std::uniform_real_distribution<float> angleDist(0.0f, XM_2PI);
-	float angle = angleDist(rng);
+	//// Random angle between 0 and 2*PI
+	//std::uniform_real_distribution<float> angleDist(0.0f, XM_2PI);
+	//float angle = angleDist(rng);
 
-	// Calculate position in XZ plane around orbit center
-	float x = m_orbitCenter.x + semiMajorAxis * cosf(angle);
-	float z = m_orbitCenter.z + semiMinorAxis * sinf(angle);
-	float y = m_orbitCenter.y; // Keep y constant
+	//// Calculate position in XZ plane around orbit center
+	//float x = m_orbitCenter.x + semiMajorAxis * cosf(angle);
+	//float z = m_orbitCenter.z + semiMinorAxis * sinf(angle);
+	//float y = m_orbitCenter.y; // Keep y constant
 
-	Vector3 haloPosition(x, y, z);
-	m_planet = std::make_unique<Planet>(haloPosition, 0.5f);
+	//Vector3 haloPosition(x, y, z);
+	//m_planet = std::make_unique<Planet>(haloPosition, 0.5f);
 
-	// Pick a random texture
-	std::uniform_int_distribution<int> dist(0, static_cast<int>(m_allPlanetTextures.size()) - 1);
-	int textureIndex = dist(rng);
-	m_planet->SetTexture(m_allPlanetTextures[textureIndex]);
-	m_planet->AddToWorld(m_dynamicsWorld);
+	//// Pick a random texture
+	//std::uniform_int_distribution<int> dist(0, static_cast<int>(m_allPlanetTextures.size()) - 1);
+	//int textureIndex = dist(rng);
+	//m_planet->SetTexture(m_allPlanetTextures[textureIndex]);
+	//m_planet->AddToWorld(m_dynamicsWorld);
 
 	// Create the procedural planetary system
+	m_planetarySystem = std::make_unique<PlanetarySystem>(m_dynamicsWorld, m_allPlanetTextures, m_orbitCenter);
+	m_planetarySystem->Initialize(50); // Initialize with 50 planets
 
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects
@@ -310,6 +312,11 @@ void Game::Update(DX::StepTimer const& timer)
 		// Update spaceship to sync graphics
 		m_spaceship->UpdateTransform();
 
+		if (m_planetarySystem)
+		{
+			m_planetarySystem->Update(static_cast<float>(timer.GetElapsedSeconds()));
+		}
+
 		// Update camera to follow spaceship
 		Vector3 spaceshipPos = m_spaceship->GetPosition();
 		Matrix rotationMatrix = Matrix::CreateRotationY(XMConvertToRadians(m_spaceship->GetRotation()));
@@ -327,28 +334,28 @@ void Game::Update(DX::StepTimer const& timer)
 
 		m_Camera01.setRotation(Vector3(pitch, yaw, 0.0f));
 
-		if (m_planet)
-		{
-			m_orbitAngle += m_orbitSpeed * static_cast<float>(timer.GetElapsedSeconds());
-			m_planetSpinAngle += m_planetSpinSpeed * static_cast<float>(timer.GetElapsedSeconds());
-			if (m_planetSpinAngle > XM_2PI)
-			{
-				m_planetSpinAngle -= XM_2PI;
-			}
+		//if (m_planet)
+		//{
+		//	m_orbitAngle += m_orbitSpeed * static_cast<float>(timer.GetElapsedSeconds());
+		//	m_planetSpinAngle += m_planetSpinSpeed * static_cast<float>(timer.GetElapsedSeconds());
+		//	if (m_planetSpinAngle > XM_2PI)
+		//	{
+		//		m_planetSpinAngle -= XM_2PI;
+		//	}
 
-			// Calculate new position using polar coordinates
-			float x = m_orbitCenter.x + m_ellipseA * cosf(m_orbitAngle);
-			float z = m_orbitCenter.z + m_ellipseB * sinf(m_orbitAngle);
-			float y = m_orbitCenter.y; // Keep y constant
+		//	// Calculate new position using polar coordinates
+		//	float x = m_orbitCenter.x + m_ellipseA * cosf(m_orbitAngle);
+		//	float z = m_orbitCenter.z + m_ellipseB * sinf(m_orbitAngle);
+		//	float y = m_orbitCenter.y; // Keep y constant
 
-			// Update the transform manually in Bullet
-			btTransform orbitTransform;
-			orbitTransform.setIdentity();
-			orbitTransform.setOrigin(btVector3(x, y, z));
+		//	// Update the transform manually in Bullet
+		//	btTransform orbitTransform;
+		//	orbitTransform.setIdentity();
+		//	orbitTransform.setOrigin(btVector3(x, y, z));
 
-			m_planet->GetRigidBody()->getMotionState()->setWorldTransform(orbitTransform);
-			m_planet->GetRigidBody()->setWorldTransform(orbitTransform);
-		}
+		//	m_planet->GetRigidBody()->getMotionState()->setWorldTransform(orbitTransform);
+		//	m_planet->GetRigidBody()->setWorldTransform(orbitTransform);
+		//}
 	}
 
 	m_Camera01.Update();	//camera update.
@@ -479,8 +486,20 @@ void Game::Render()
 	m_BasicShaderPair.SetShaderParameters(context, &planetSun, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
 	m_SunModel.Render(context);
 
+	if (m_planetarySystem)
+	{
+		m_planetarySystem->Render(
+			context, 
+			m_view, 
+			m_projection, 
+			m_Light, 
+			m_BasicShaderPair, 
+			m_PlanetModel,
+			m_PlanetHaloModel);
+	}
+
 	//draw planet around the sun
-	if (m_planet)
+	/*if (m_planet)
 	{
 		btTransform orbitTransform;
 		m_planet->GetRigidBody()->getMotionState()->getWorldTransform(orbitTransform);
@@ -493,7 +512,7 @@ void Game::Render()
 
 		m_BasicShaderPair.SetShaderParameters(context, &orbitWorld, &m_view, &m_projection, &m_Light, m_planet->GetTexture().Get(), true);
 		m_PlanetModel.Render(context);
-	}
+	}*/
 
 	//draw planet halo
 	DirectX::XMFLOAT4 planetHaloColor(1.0f, 1.0f, 1.0f, 1.0f);
