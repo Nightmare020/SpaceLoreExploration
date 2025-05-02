@@ -89,7 +89,7 @@ void PlanetarySystem::Render(ID3D11DeviceContext* context, DirectX::SimpleMath::
 		planetModel.Render(context);
 
 		// Orbit halo
-		float orbitScale = orbitingPlanet.orbitRadius;
+		float orbitScale = orbitingPlanet.orbitRadius / 170.0f;
 
 		// Slightly higher Y so it doesn't Z-Fight with the planet
 		DirectX::SimpleMath::Matrix haloWorld = DirectX::SimpleMath::Matrix::CreateScale(orbitScale, 1.0f, orbitScale) * 

@@ -15,3 +15,8 @@ Planet::Planet(const DirectX::SimpleMath::Vector3& pos, float radius)
 
 	m_rigidBody->setActivationState(DISABLE_DEACTIVATION); // So it keeps simulating
 }
+
+float Planet::GetRadius() const
+{
+	return static_cast<btSphereShape*>(m_collisionShape)->getRadius();
+}
