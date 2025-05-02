@@ -180,6 +180,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra3;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra4;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureTundra5;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_textureStars;
 
     //Shaders
     Shader																	m_BasicShaderPair;
@@ -241,4 +242,13 @@ private:
 
     std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>           m_allPlanetTextures;
 	std::unique_ptr<Planet>                                                 m_planet;
+
+	float 																    m_orbitRadius = 10.0f;
+    float                                                                   m_ellipseA = 105.0f; // semi-major axis (X)
+	float                                                                   m_ellipseB = 100.0f; // semi-minor axis (Z)
+	float 																    m_orbitSpeed = 0.1f; // Radians per second
+	float 																    m_orbitAngle = 0.0f; // Current angle in orbit
+	float                                                                   m_planetSpinAngle = 0.0f; // Current angle of planet spin
+	float 																    m_planetSpinSpeed = 0.3f; // Radians per second
+	DirectX::SimpleMath::Vector3 											m_orbitCenter;
 };

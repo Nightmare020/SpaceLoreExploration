@@ -22,6 +22,7 @@ Game::Game() noexcept(false)
 	m_deviceResources = std::make_unique<DX::DeviceResources>();
 	m_deviceResources->RegisterDeviceNotify(this);
 	m_gameStarted = false;
+	m_orbitCenter = Vector3(0.0f, 0.0f, 0.0f); // Center of orbit for the planet
 }
 
 Game::~Game()
@@ -106,14 +107,27 @@ void Game::Initialize(HWND window, int width, int height)
 	m_sun->AddToWorld(m_dynamicsWorld);
 
 	// Create planet object
-	Vector3 orbitPlanetPos(10.0f, 0.0f, 0.0f);
-	m_planet = std::make_unique<Planet>(orbitPlanetPos, 0.5f);
+	float semiMajorAxis = 103.0f; // X axis
+	float semiMinorAxis = 99.0f; // Z axis
+
+	std::random_device rd;
+	std::mt19937 rng(rd()); // Seed with a real random value, if available
+
+	// Random angle between 0 and 2*PI
+	std::uniform_real_distribution<float> angleDist(0.0f, XM_2PI);
+	float angle = angleDist(rng);
+
+	// Calculate position in XZ plane around orbit center
+	float x = m_orbitCenter.x + semiMajorAxis * cosf(angle);
+	float z = m_orbitCenter.z + semiMinorAxis * sinf(angle);
+	float y = m_orbitCenter.y; // Keep y constant
+
+	Vector3 haloPosition(x, y, z);
+	m_planet = std::make_unique<Planet>(haloPosition, 0.5f);
 
 	// Pick a random texture
-	std::random_device rd;
-	std::mt19937 rand(rd()); // Seed with a real random value, if available
 	std::uniform_int_distribution<int> dist(0, static_cast<int>(m_allPlanetTextures.size()) - 1);
-	int textureIndex = dist(rand);
+	int textureIndex = dist(rng);
 	m_planet->SetTexture(m_allPlanetTextures[textureIndex]);
 	m_planet->AddToWorld(m_dynamicsWorld);
 
@@ -181,19 +195,9 @@ void Game::Update(DX::StepTimer const& timer)
 	auto mouseDelta = m_input.getMouseDelta();
 
 	// Check if start game (TAB) is pressed
-	if (m_gameInputCommands.startGame && !m_gameStarted)
+	if (m_gameInputCommands.startGame)
 	{
-		if (!m_gameStarted)
-		{
-			// Start the game
-			m_gameStarted = true;
-		}
-		else
-		{
-			// Stop the game
-			m_gameStarted = false;
-		}
-
+		m_gameStarted = !m_gameStarted; // Toggle game state
 	}
 
 	// -- Free Camera Mode --
@@ -253,7 +257,8 @@ void Game::Update(DX::StepTimer const& timer)
 			m_Camera01.setRotation(rotation);
 		}
 	}
-	else
+	
+	if (m_gameStarted)
 	{
 		// -- Gameplay Mode: Control the spaceship --
 
@@ -319,6 +324,29 @@ void Game::Update(DX::StepTimer const& timer)
 		float yaw = atan2f(direction.x, direction.z);
 
 		m_Camera01.setRotation(Vector3(pitch, yaw, 0.0f));
+
+		if (m_planet)
+		{
+			m_orbitAngle += m_orbitSpeed * static_cast<float>(timer.GetElapsedSeconds());
+			m_planetSpinAngle += m_planetSpinSpeed * static_cast<float>(timer.GetElapsedSeconds());
+			if (m_planetSpinAngle > XM_2PI)
+			{
+				m_planetSpinAngle -= XM_2PI;
+			}
+
+			// Calculate new position using polar coordinates
+			float x = m_orbitCenter.x + m_ellipseA * cosf(m_orbitAngle);
+			float z = m_orbitCenter.z + m_ellipseB * sinf(m_orbitAngle);
+			float y = m_orbitCenter.y; // Keep y constant
+
+			// Update the transform manually in Bullet
+			btTransform orbitTransform;
+			orbitTransform.setIdentity();
+			orbitTransform.setOrigin(btVector3(x, y, z));
+
+			m_planet->GetRigidBody()->getMotionState()->setWorldTransform(orbitTransform);
+			m_planet->GetRigidBody()->setWorldTransform(orbitTransform);
+		}
 	}
 
 	m_Camera01.Update();	//camera update.
@@ -377,6 +405,20 @@ void Game::Render()
 
 	Clear();
 
+	//m_sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+
+	//// Draw fullscreen sprite
+	//m_sprites->Draw(m_textureStars.Get(),
+	//	XMFLOAT2(0, 0),
+	//	nullptr,
+	//	Colors::White,
+	//	0.0f,
+	//	XMFLOAT2(0, 0),
+	//	XMFLOAT2(float(m_deviceResources->GetOutputSize().right) / 1920.0f,
+	//		float(m_deviceResources->GetOutputSize().bottom) / 1080.0f));
+
+	//m_sprites->End();
+
 	m_deviceResources->PIXBeginEvent(L"Render");
 	auto context = m_deviceResources->GetD3DDeviceContext();
 	auto renderTargetView = m_deviceResources->GetRenderTargetView();
@@ -429,10 +471,10 @@ void Game::Render()
 	// Build planet world matrix from physics position and scale
 	Vector3 planetPos(origin.getX(), origin.getY(), origin.getZ());
 	float visualScale = radius; // Scale for rendering
-	Matrix planetWorld = Matrix::CreateScale(radius) * Matrix::CreateTranslation(planetPos);
+	Matrix planetSun = Matrix::CreateScale(radius) * Matrix::CreateTranslation(planetPos);
 
 	//draw sun
-	m_BasicShaderPair.SetShaderParameters(context, &planetWorld, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
+	m_BasicShaderPair.SetShaderParameters(context, &planetSun, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
 	m_SunModel.Render(context);
 
 	//draw planet around the sun
@@ -444,9 +486,10 @@ void Game::Render()
 		float orbitRadius = static_cast<btSphereShape*>(m_planet->GetRigidBody()->getCollisionShape())->getRadius();
 
 		Vector3 orbitPos(orbitOrigin.getX(), orbitOrigin.getY(), orbitOrigin.getZ());
-		Matrix orbitWorld = Matrix::CreateScale(orbitRadius) * Matrix::CreateTranslation(orbitPos);
+		Matrix spinRotation = Matrix::CreateRotationY(m_planetSpinAngle);
+		Matrix orbitWorld = Matrix::CreateScale(orbitRadius) * spinRotation * Matrix::CreateTranslation(orbitPos);
 
-		m_BasicShaderPair.SetShaderParameters(context, &planetWorld, &m_view, &m_projection, &m_Light, m_planet->GetTexture().Get(), true);
+		m_BasicShaderPair.SetShaderParameters(context, &orbitWorld, &m_view, &m_projection, &m_Light, m_planet->GetTexture().Get(), true);
 		m_PlanetModel.Render(context);
 	}
 
@@ -665,6 +708,7 @@ void Game::CreateDeviceDependentResources()
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_03-1024x512.dds", nullptr, m_textureTundra4.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_04-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
 	CreateDDSTextureFromFile(device, L"Planets_Textures/Planet Textures 1024x512/Tundra/Tundra_05-1024x512.dds", nullptr, m_textureTundra5.ReleaseAndGetAddressOf());
+	CreateDDSTextureFromFile(device, L"Stars_bg.dds", nullptr, m_textureStars.ReleaseAndGetAddressOf());
 
 	m_allPlanetTextures = {
 		m_textureArid1.Get(),

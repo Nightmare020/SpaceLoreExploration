@@ -5,7 +5,7 @@ using namespace DirectX::SimpleMath;
 
 Spaceship::Spaceship(const DirectX::SimpleMath::Vector3& pos)
 {
-	m_collisionShape = new btBoxShape(btVector3(10.0f, 5.0f, 45.0f)); // Size of spaceship
+	m_collisionShape = new btBoxShape(btVector3(35.0f, 35.0f, 45.0f)); // Size of spaceship
 	btTransform startTransform;
 	startTransform.setIdentity();
 	startTransform.setOrigin(btVector3(pos.x, pos.y, pos.z));
