@@ -108,7 +108,6 @@ void Game::Initialize(HWND window, int width, int height)
 
 	// Create the procedural planetary system
 	m_planetarySystem = std::make_unique<PlanetarySystem>(m_dynamicsWorld, m_allPlanetTextures, m_orbitCenter);
-	m_planetarySystem->Initialize(50); // Initialize with 50 planets
 
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects
@@ -289,7 +288,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 		if (m_planetarySystem)
 		{
-			m_planetarySystem->Update(static_cast<float>(timer.GetElapsedSeconds()));
+			m_planetarySystem->Update(static_cast<float>(timer.GetElapsedSeconds()), m_Camera01.getPosition());
 		}
 
 		// Update camera to follow spaceship
