@@ -1,5 +1,6 @@
 #pragma once
 #include "PhysicsObject.h"
+#include "PerlinNoise.hpp"
 
 class Planet : public PhysicsObject
 {

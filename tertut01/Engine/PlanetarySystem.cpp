@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "PlanetarySystem.h"
+#include "modelclass.h"
 
-PlanetarySystem::PlanetarySystem(btDiscreteDynamicsWorld* dynamicsWorld, 
+PlanetarySystem::PlanetarySystem(ID3D11Device* device, btDiscreteDynamicsWorld* dynamicsWorld,
 	const std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures, const DirectX::SimpleMath::Vector3& orbitCenter)
-	: m_DynamicsWorld(dynamicsWorld), m_Textures(textures), m_OrbitCenter(orbitCenter)
+	: m_Device(device), m_DynamicsWorld(dynamicsWorld), m_Textures(textures), m_OrbitCenter(orbitCenter)
 {
 	std::random_device rd;
 	m_rng = std::mt19937(rd()); // Seed with a real random value, if available
@@ -61,8 +62,9 @@ void PlanetarySystem::Render(ID3D11DeviceContext* context, DirectX::SimpleMath::
 
 		shader.SetShaderParameters(context, &planetWorld, &view, &projection, &light, 
 			orbitingPlanet.planet->GetTexture().Get(), true);
-		planetModel.Render(context);
+		orbitingPlanet.model->Render(context);
 
+		// If halo is messy, disabled it here
 		float orbitScale = orbitingPlanet.orbitRadius / 170.0f;
 		DirectX::SimpleMath::Matrix haloWorld = DirectX::SimpleMath::Matrix::CreateScale(orbitScale, 1.0f / orbitScale, orbitScale) *
 			DirectX::SimpleMath::Matrix::CreateTranslation(m_OrbitCenter + DirectX::SimpleMath::Vector3(0, 0.1f, 0));
@@ -77,25 +79,40 @@ void PlanetarySystem::TryGeneratePlanet(int index)
 	if (m_Planets.find(index) != m_Planets.end())
 		return;
 
+	// Randomize properties
 	float orbitRadius = 120.0f + index * m_Spacing;
 	float angle = GetRandomFloat(0.0f, XM_2PI);
 	float orbitSpeed = GetRandomFloat(0.01f, 0.04f);
 	float spinSpeed = GetRandomFloat(0.5f, 2.0f);
 	float planetSize = GetRandomFloat(0.3f, 0.8f);
 
+	// Position
 	float x = m_OrbitCenter.x + orbitRadius * cosf(angle);
 	float z = m_OrbitCenter.z + orbitRadius * sinf(angle);
 	float y = m_OrbitCenter.y;
 
 	DirectX::SimpleMath::Vector3 position(x, y, z);
+
+	// Create planet physic object
 	std::unique_ptr<Planet> planet = std::make_unique<Planet>(position, planetSize);
 
+	// Pick texture randomly
 	int textureIndex = GetRandomInt(0, static_cast<int>(m_Textures.size()) - 1);
 	planet->SetTexture(m_Textures[textureIndex].Get());
+	
+	// Add to Bullet physic world
 	planet->AddToWorld(m_DynamicsWorld);
+
+	// Generate the planet model with terrain
+	std::unique_ptr<ModelClass> planetModel = std::make_unique<ModelClass>();
+	siv::PerlinNoise noise(GetRandomInt(0, 999999));
+	float amplitude = 5.5f;
+	float frequency = 3.0f;
+	planetModel->LoadPlanetModel(m_Device, "Planet.obj", noise, amplitude, frequency);
 
 	OrbitingPlanet orbitingPlanet;
 	orbitingPlanet.planet = std::move(planet);
+	orbitingPlanet.model = std::move(planetModel);
 	orbitingPlanet.orbitRadius = orbitRadius;
 	orbitingPlanet.orbitAngle = angle;
 	orbitingPlanet.orbitSpeed = orbitSpeed;

@@ -107,7 +107,7 @@ void Game::Initialize(HWND window, int width, int height)
 	m_sun->AddToWorld(m_dynamicsWorld);
 
 	// Create the procedural planetary system
-	m_planetarySystem = std::make_unique<PlanetarySystem>(m_dynamicsWorld, m_allPlanetTextures, m_orbitCenter);
+	m_planetarySystem = std::make_unique<PlanetarySystem>(m_deviceResources->GetD3DDevice(), m_dynamicsWorld, m_allPlanetTextures, m_orbitCenter);
 
 #ifdef DXTK_AUDIO
 	// Create DirectXTK for Audio objects

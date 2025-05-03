@@ -454,6 +454,40 @@ bool ModelClass::LoadModel(char* filename)
 	return true;
 }
 
+bool ModelClass::LoadPlanetModel(ID3D11Device* device, char* filename, siv::PerlinNoise& noise, float amplitude, float frequency)
+{
+	// Load base model data (custom planet)
+	if (!LoadModel(filename))
+		return false;
+
+	// Apply Perlin noise to vertex positions to simulate terrain
+	for (auto& vertex : preFabVertices)
+	{
+		DirectX::SimpleMath::Vector3 dir = vertex.position;
+		dir.Normalize();
+
+		// Scale to control noise frequency
+		float nx = dir.x * frequency;
+		float ny = dir.y * frequency;
+		float nz = dir.z * frequency;
+
+		// Sample Perlin noise
+		float n = static_cast<float>(noise.normalizedOctave3D_01(nx, ny, nz, 5, 0.5));
+
+		// Displace vertex along normal by noise * amplitude
+		DirectX::SimpleMath::Vector3 pos(vertex.position.x, vertex.position.y, vertex.position.z);
+		pos += dir * (n * amplitude);
+		vertex.position = DirectX::SimpleMath::Vector3(pos);
+	}
+
+	// Update vertex/index count
+	m_vertexCount = preFabVertices.size();
+	m_indexCount = preFabIndices.size();
+
+	// Recreate buffers with updated vertices
+	return InitializeBuffers(device);
+}
+
 
 void ModelClass::ReleaseModel()
 {

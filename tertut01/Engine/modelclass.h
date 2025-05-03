@@ -9,6 +9,7 @@
 // INCLUDES //
 //////////////
 #include "pch.h"
+#include "PerlinNoise.hpp"
 //#include <d3dx10math.h>
 //#include <fstream>
 //using namespace std;
@@ -39,6 +40,8 @@ public:
 	bool InitializeBox(ID3D11Device*, float xwidth, float yheight, float zdepth);
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
+	bool LoadPlanetModel(ID3D11Device* device, char* filename, siv::PerlinNoise& noise,
+		float amplitude, float frequency);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
