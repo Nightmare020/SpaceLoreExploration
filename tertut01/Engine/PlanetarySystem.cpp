@@ -64,8 +64,7 @@ void PlanetarySystem::Render(ID3D11DeviceContext* context, DirectX::SimpleMath::
 		planetModel.Render(context);
 
 		float orbitScale = orbitingPlanet.orbitRadius / 170.0f;
-
-		DirectX::SimpleMath::Matrix haloWorld = DirectX::SimpleMath::Matrix::CreateScale(orbitScale, 1.0f, orbitScale) *
+		DirectX::SimpleMath::Matrix haloWorld = DirectX::SimpleMath::Matrix::CreateScale(orbitScale, 1.0f / orbitScale, orbitScale) *
 			DirectX::SimpleMath::Matrix::CreateTranslation(m_OrbitCenter + DirectX::SimpleMath::Vector3(0, 0.1f, 0));
 		DirectX::XMFLOAT4 haloColor(1.0f, 1.0f, 1.0f, 0.15f);
 		shader.SetShaderParameters(context, &haloWorld, &view, &projection, &light, nullptr, false, haloColor);
