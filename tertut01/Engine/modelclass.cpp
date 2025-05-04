@@ -1,30 +1,50 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: modelclass.cpp
+// Description: Implements the ModelClass, which handles 3D model data, including
+// vertex and index buffers, textures, and material properties. It provides
+// methods for loading models, initializing buffers, and rendering.
 ////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 #include "modelclass.h"
 
 using namespace DirectX;
 
+/// Constructor to initialize member variables.
 ModelClass::ModelClass()
 {
-	m_vertexBuffer = 0;
-	m_indexBuffer = 0;
-
+	m_vertexBuffer = nullptr; // Initialize the vertex buffer to null.
+	m_indexBuffer = nullptr;  // Initialize the index buffer to null.
 }
+
+/// Destructor to clean up resources.
 ModelClass::~ModelClass()
 {
 }
 
-
+/// Initializes the model by loading it from a file and setting up buffers.
+/// @param device Pointer to the Direct3D device.
+/// @param filename Path to the model file.
+/// @return True if initialization is successful, false otherwise.
 bool ModelClass::InitializeModel(ID3D11Device* device, char* filename)
 {
-	LoadModel(filename);
+	// Load the model data from the file.
+	if (!LoadModel(filename))
+	{
+		return false; // Return false if the model fails to load.
+	}
 
 	m_vertexCount = preFabVertices.size();
 	m_indexCount = preFabIndices.size();
 
-	InitializeBuffers(device);
+	// Set vertex and index counts based on loaded data.
+	m_vertexCount = preFabVertices.size();
+	m_indexCount = preFabIndices.size();
+
+	// Initialize the vertex and index buffers.
+	if (!InitializeBuffers(device))
+	{
+		return false; // Return false if buffer initialization fails.
+	}
 
 	// After initialising buffers, load textures if a material was found
 	if (!m_diffuseTextureFilename.empty())
@@ -78,64 +98,16 @@ bool ModelClass::InitializeModel(ID3D11Device* device, char* filename)
 	return true;
 }
 
+// Retrieves the diffuse texture of the model.
+/// @return Pointer to the shader resource view of the diffuse texture.
 ID3D11ShaderResourceView* ModelClass::GetTexture()
 {
 	return m_diffuseTexture.Get();
 }
 
-bool ModelClass::InitializeTeapot(ID3D11Device* device)
-{
-	GeometricPrimitive::CreateTeapot(preFabVertices, preFabIndices, 1, 8, false);
-	m_vertexCount = preFabVertices.size();
-	m_indexCount = preFabIndices.size();
-
-	bool result;
-	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
-	if (!result)
-	{
-		return false;
-	}
-	return true;
-}
-
-bool ModelClass::InitializeSphere(ID3D11Device* device)
-{
-	GeometricPrimitive::CreateSphere(preFabVertices, preFabIndices, 1, 8, false);
-	m_vertexCount = preFabVertices.size();
-	m_indexCount = preFabIndices.size();
-
-	bool result;
-	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
-	if (!result)
-	{
-		return false;
-	}
-	return true;
-}
-
-bool ModelClass::InitializeBox(ID3D11Device* device, float xwidth, float yheight, float zdepth)
-{
-	GeometricPrimitive::CreateBox(preFabVertices, preFabIndices,
-		DirectX::SimpleMath::Vector3(xwidth, yheight, zdepth), false);
-	m_vertexCount = preFabVertices.size();
-	m_indexCount = preFabIndices.size();
-
-	bool result;
-	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
-	if (!result)
-	{
-		return false;
-	}
-	return true;
-}
-
-
+/// Releases all resources associated with the model.
 void ModelClass::Shutdown()
 {
-
 	// Shutdown the vertex and index buffers.
 	ShutdownBuffers();
 
@@ -145,7 +117,8 @@ void ModelClass::Shutdown()
 	return;
 }
 
-
+/// Renders the model by binding its buffers and textures to the pipeline.
+/// @param deviceContext Pointer to the Direct3D device context.
 void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
 	// Bind the textures to pixel shader before drawing (if exists)
@@ -186,13 +159,16 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 	return;
 }
 
-
+/// Retrieves the number of indices in the model.
+/// @return The number of indices.
 int ModelClass::GetIndexCount()
 {
 	return m_indexCount;
 }
 
-
+/// Initializes the vertex and index buffers for the model.
+/// @param device Pointer to the Direct3D device.
+/// @return True if the buffers are successfully initialized, false otherwise.
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	VertexType* vertices;
@@ -320,7 +296,9 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	return;
 }
 
-
+/// Loads the model data from a file.
+/// @param filename Path to the model file.
+/// @return True if the model is successfully loaded, false otherwise.
 bool ModelClass::LoadModel(char* filename)
 {
 	std::vector<XMFLOAT3> verts;
@@ -454,6 +432,13 @@ bool ModelClass::LoadModel(char* filename)
 	return true;
 }
 
+/// Applies Perlin noise to the model's vertices to simulate terrain.
+/// @param device Pointer to the Direct3D device.
+/// @param filename Path to the model file.
+/// @param noise Reference to a Perlin noise generator.
+/// @param amplitude Amplitude of the noise displacement.
+/// @param frequency Frequency of the noise.
+/// @return True if the model is successfully loaded and modified, false otherwise.
 bool ModelClass::LoadPlanetModel(ID3D11Device* device, char* filename, siv::PerlinNoise& noise, float amplitude, float frequency)
 {
 	// Load base model data (custom planet)
@@ -494,6 +479,9 @@ void ModelClass::ReleaseModel()
 	return;
 }
 
+/// Loads material properties from a material file (.mtl).
+/// @param filename Path to the material file.
+/// @return True if the material is successfully loaded, false otherwise.
 bool ModelClass::LoadMaterial(char* filename)
 {
 	// Load the material file

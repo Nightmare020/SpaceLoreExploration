@@ -1,16 +1,17 @@
 #include "pch.h"
 #include "Shader.h"
 
-
+/// Constructor to initialize the Shader object.
 Shader::Shader()
 {
 }
 
-
+/// Destructor to clean up resources.
 Shader::~Shader()
 {
 }
 
+/// Initializes a standard vertex and pixel shader pair.
 bool Shader::InitStandard(ID3D11Device* device, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	D3D11_BUFFER_DESC	matrixBufferDesc;
@@ -183,6 +184,7 @@ bool Shader::InitGlowShader(ID3D11Device* device, WCHAR* vsFilename, WCHAR* psFi
 	return true;
 }
 
+/// Sets the parameters for the standard shader.
 bool Shader::SetShaderParameters(ID3D11DeviceContext* context, DirectX::SimpleMath::Matrix* world, DirectX::SimpleMath::Matrix* view, DirectX::SimpleMath::Matrix* projection, Light* sceneLight1,
 	ID3D11ShaderResourceView* texture1, bool useTexture,
 	DirectX::XMFLOAT4 meshColor, ID3D11ShaderResourceView* texture2,
@@ -261,6 +263,7 @@ bool Shader::SetGlowShaderParameters(ID3D11DeviceContext* context, DirectX::Simp
 	return true;
 }
 
+/// Enables the shader for rendering.
 void Shader::EnableShader(ID3D11DeviceContext* context)
 {
 	context->IASetInputLayout(m_layout);							//set the input layout for the shader to match out geometry

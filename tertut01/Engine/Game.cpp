@@ -559,11 +559,6 @@ void Game::CreateDeviceDependentResources()
 	m_font = std::make_unique<SpriteFont>(device, L"SegoeUI_18.spritefont");
 	m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 
-	//setup our test model
-	m_BasicModel.InitializeSphere(device);
-	m_BasicModel2.InitializeModel(device, "drone.obj");
-	m_BasicModel3.InitializeBox(device, 10.0f, 0.1f, 10.0f);	//box includes dimensions
-
 	//setup spaceship model
 	m_SpaceShipModel.InitializeModel(device, "SpaceShip.obj");
 

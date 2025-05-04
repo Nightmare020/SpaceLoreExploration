@@ -1,86 +1,130 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: modelclass.h
+// Description: Defines the ModelClass, which handles 3D model data, including
+// vertex and index buffers, textures, and material properties. It provides
+// methods for loading models, initializing buffers, and rendering.
 ////////////////////////////////////////////////////////////////////////////////
+
 #ifndef _MODELCLASS_H_
 #define _MODELCLASS_H_
-
 
 //////////////
 // INCLUDES //
 //////////////
 #include "pch.h"
 #include "PerlinNoise.hpp"
-//#include <d3dx10math.h>
-//#include <fstream>
-//using namespace std;
-
-////////////////////////////////////////////////////////////////////////////////
-// Class name: ModelClass
-////////////////////////////////////////////////////////////////////////////////
 
 using namespace DirectX;
 
+/// Represents a 3D model, including its geometry, textures, and material properties.
+/// This class provides functionality for loading models, initializing buffers,
+/// and rendering the model using Direct3D.
 class ModelClass
 {
 private:
-	struct VertexType
-	{
-		DirectX::SimpleMath::Vector3 position;
-		DirectX::SimpleMath::Vector2 texture;
-		DirectX::SimpleMath::Vector3 normal;
-	};
+    /// Defines the structure of a vertex, including position, texture coordinates, and normal vector.
+    struct VertexType
+    {
+        DirectX::SimpleMath::Vector3 position; ///< Position of the vertex in 3D space.
+        DirectX::SimpleMath::Vector2 texture;  ///< Texture coordinates for the vertex.
+        DirectX::SimpleMath::Vector3 normal;   ///< Normal vector for lighting calculations.
+    };
 
 public:
-	ModelClass();
-	~ModelClass();
+    /// Constructor to initialize the model class.
+    ModelClass();
 
-	bool InitializeModel(ID3D11Device* device, char* filename);
-	bool InitializeTeapot(ID3D11Device*);
-	bool InitializeSphere(ID3D11Device*);
-	bool InitializeBox(ID3D11Device*, float xwidth, float yheight, float zdepth);
-	void Shutdown();
-	void Render(ID3D11DeviceContext*);
-	bool LoadPlanetModel(ID3D11Device* device, char* filename, siv::PerlinNoise& noise,
-		float amplitude, float frequency);
+    /// Destructor to clean up resources.
+    ~ModelClass();
 
-	int GetIndexCount();
-	ID3D11ShaderResourceView* GetTexture();
+    /// Initializes the model by loading it from a file and setting up buffers.
+    /// @param device Pointer to the Direct3D device.
+    /// @param filename Path to the model file.
+    /// @return True if initialization is successful, false otherwise.
+    bool InitializeModel(ID3D11Device* device, char* filename);
+
+    /// Releases all resources associated with the model.
+    void Shutdown();
+
+    /// Renders the model by binding its buffers and textures to the pipeline.
+    /// @param deviceContext Pointer to the Direct3D device context.
+    void Render(ID3D11DeviceContext* deviceContext);
+
+    /// Loads a planet model and applies Perlin noise to simulate terrain.
+    /// @param device Pointer to the Direct3D device.
+    /// @param filename Path to the model file.
+    /// @param noise Reference to a Perlin noise generator.
+    /// @param amplitude Amplitude of the noise displacement.
+    /// @param frequency Frequency of the noise.
+    /// @return True if the model is successfully loaded and modified, false otherwise.
+    bool LoadPlanetModel(ID3D11Device* device, char* filename, siv::PerlinNoise& noise,
+        float amplitude, float frequency);
+
+    /// Retrieves the number of indices in the model.
+    /// @return The number of indices.
+    int GetIndexCount();
+
+    /// Retrieves the diffuse texture of the model.
+    /// @return Pointer to the shader resource view of the diffuse texture.
+    ID3D11ShaderResourceView* GetTexture();
 
 private:
-	bool InitializeBuffers(ID3D11Device*);
-	void ShutdownBuffers();
-	void RenderBuffers(ID3D11DeviceContext*);
-	bool LoadModel(char*);
+    /// Initializes the vertex and index buffers for the model.
+    /// @param device Pointer to the Direct3D device.
+    /// @return True if the buffers are successfully initialized, false otherwise.
+    bool InitializeBuffers(ID3D11Device* device);
 
-	void ReleaseModel();
+    /// Releases the vertex and index buffers.
+    void ShutdownBuffers();
 
-	// Load material (.mtl) file
-	bool LoadMaterial(char*);
-	std::string ParseTextureFilename(const std::string& line, const std::string& token);
+    /// Binds the vertex and index buffers to the pipeline for rendering.
+    /// @param deviceContext Pointer to the Direct3D device context.
+    void RenderBuffers(ID3D11DeviceContext* deviceContext);
+
+    /// Loads the model data from a file.
+    /// @param filename Path to the model file.
+    /// @return True if the model is successfully loaded, false otherwise.
+    bool LoadModel(char* filename);
+
+    /// Releases the model data.
+    void ReleaseModel();
+
+    /// Loads material properties from a material file (.mtl).
+    /// @param filename Path to the material file.
+    /// @return True if the material is successfully loaded, false otherwise.
+    bool LoadMaterial(char* filename);
+
+    /// Parses a texture filename from a material file line.
+    /// @param line The line containing the texture filename.
+    /// @param token The token to search for in the line.
+    /// @return The parsed texture filename.
+    std::string ParseTextureFilename(const std::string& line, const std::string& token);
 
 private:
-	ID3D11Buffer* m_vertexBuffer, * m_indexBuffer;
-	int m_vertexCount, m_indexCount;
+    ID3D11Buffer* m_vertexBuffer; ///< Pointer to the vertex buffer.
+    ID3D11Buffer* m_indexBuffer;  ///< Pointer to the index buffer.
+    int m_vertexCount; ///< Number of vertices in the model.
+    int m_indexCount;  ///< Number of indices in the model.
 
-	//arrays for our generated objects Made by directX
-	std::vector<VertexPositionNormalTexture> preFabVertices;
-	std::vector<uint16_t> preFabIndices;
+    // Arrays for storing vertex and index data generated by DirectX.
+    std::vector<VertexPositionNormalTexture> preFabVertices; ///< Pre-fabricated vertices.
+    std::vector<uint16_t> preFabIndices; ///< Pre-fabricated indices.
 
-	// Diffuse texture filename loaded from .mtl file
-	std::string m_diffuseTextureFilename;
-	std::string m_roughnessTextureFilename;
-	std::string m_metallicTextureFilename;
-	std::string m_aoTextureFilename;
-	std::string m_normalTextureFilename;
-	std::string m_emissiveTextureFilename;
+    // Texture filenames loaded from the material file.
+    std::string m_diffuseTextureFilename;
+    std::string m_roughnessTextureFilename;
+    std::string m_metallicTextureFilename;
+    std::string m_aoTextureFilename;
+    std::string m_normalTextureFilename;
+    std::string m_emissiveTextureFilename;
 
-	// Diffuse texture resource
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_diffuseTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_roughnessTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_metallicTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_aoTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_normalTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_emissiveTexture;
+    // Texture resources.
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_diffuseTexture;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_roughnessTexture;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_metallicTexture;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_aoTexture;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_normalTexture;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_emissiveTexture;
 };
 
 #endif

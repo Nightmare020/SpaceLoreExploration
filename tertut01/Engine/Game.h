@@ -18,26 +18,35 @@
 #include <btBulletDynamicsCommon.h>
 
 
-// A basic game implementation that creates a D3D11 device and
-// provides a game loop.
+/// Represents the main game class, which manages the game loop, rendering, input, and game objects.
+/// This class initializes Direct3D resources, handles input, updates game objects, and renders the scene.
 class Game final : public DX::IDeviceNotify
 {
 public:
 
+    /// Constructor to initialize the game object.
     Game() noexcept(false);
+
+    /// Destructor to clean up resources.
     ~Game();
 
-    // Initialization and management
+    /// Initializes the game with the specified window and dimensions.
+    /// @param window The handle to the game window.
+    /// @param width The width of the game window.
+    /// @param height The height of the game window.
     void Initialize(HWND window, int width, int height);
 
     // Basic game loop
     void Tick();
 
     // IDeviceNotify
+    /// Called when the Direct3D device is lost.   
     virtual void OnDeviceLost() override;
+
+    /// Called when the Direct3D device is restored.
     virtual void OnDeviceRestored() override;
 
-    // Messages
+    // Message handlers
     void OnActivated();
     void OnDeactivated();
     void OnSuspending();
@@ -48,7 +57,9 @@ public:
     void NewAudioDevice();
 #endif
 
-    // Properties
+    /// Retrieves the default window size.
+    /// @param width Reference to store the default width.
+    /// @param height Reference to store the default height.
     void GetDefaultSize(int& width, int& height) const;
 
 private:
@@ -60,11 +71,23 @@ private:
         DirectX::XMMATRIX projection;
     };
 
+    /// Updates the game state.
+    /// @param timer The timer object for tracking elapsed time.
     void Update(DX::StepTimer const& timer);
+
+    /// Renders the game scene.
     void Render();
+
+    /// Clears the back buffers.
     void Clear();
+
+    /// Creates resources that depend on the Direct3D device.
     void CreateDeviceDependentResources();
+
+    /// Creates resources that depend on the window size.
     void CreateWindowSizeDependentResources();
+
+    /// Sets up the ImGui-based graphical user interface.
     void SetupGUI();
 
     // Device resources.
@@ -79,22 +102,24 @@ private:
     bool 								    m_gameStarted;
 
     // DirectXTK objects.
-    std::unique_ptr<DirectX::CommonStates>                                  m_states;
-    std::unique_ptr<DirectX::BasicEffect>                                   m_batchEffect;
-    std::unique_ptr<DirectX::EffectFactory>                                 m_fxFactory;
-    std::unique_ptr<DirectX::SpriteBatch>                                   m_sprites;
-    std::unique_ptr<DirectX::SpriteFont>                                    m_font;
+    std::unique_ptr<DirectX::CommonStates> m_states; ///< Common rendering states.
+    std::unique_ptr<DirectX::BasicEffect> m_batchEffect; ///< Effect for rendering primitives.
+    std::unique_ptr<DirectX::EffectFactory> m_fxFactory; ///< Factory for creating effects.
+    std::unique_ptr<DirectX::SpriteBatch> m_sprites; ///< Manages 2D sprite rendering.
+    std::unique_ptr<DirectX::SpriteFont> m_font; ///< Font for rendering text.
 
-    // Scene Objects
-    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>  m_batch;
-    Microsoft::WRL::ComPtr<ID3D11InputLayout>                               m_batchInputLayout;
-    std::unique_ptr<DirectX::GeometricPrimitive>                            m_testmodel;
 
-    //lights
-    Light																	m_Light;
+    // Scene objects.
+    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_batch; ///< Batch for rendering primitives.
+    Microsoft::WRL::ComPtr<ID3D11InputLayout> m_batchInputLayout; ///< Input layout for the batch.
+    std::unique_ptr<DirectX::GeometricPrimitive> m_testmodel; ///< Test model for rendering.
 
-    //Cameras
-    Camera																	m_Camera01;
+
+    // Lighting.
+    Light m_Light; ///< Represents the main light source.
+
+    // Camera.
+    Camera m_Camera01; ///< Main camera for the scene.
 
     //textures 
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                        m_texture1;
