@@ -431,12 +431,19 @@ void Game::Render()
 	// Build planet world matrix from physics position and scale
 	Vector3 planetPos(origin.getX(), origin.getY(), origin.getZ());
 	float visualScale = radius; // Scale for rendering
-	Matrix planetSun = Matrix::CreateScale(radius) * Matrix::CreateTranslation(planetPos);
+	Matrix planetsWorld = Matrix::CreateScale(radius) * Matrix::CreateTranslation(planetPos);
 
 	//draw sun
-	m_BasicShaderPair.SetShaderParameters(context, &planetSun, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
+	m_GlowShaderPair.EnableShader(context);
+	m_GlowShaderPair.SetGlowShaderParameters(context, &planetsWorld, &m_view, &m_projection, m_textureSun.Get(),
+		XMFLOAT4(1.3f, 1.0f, 0.6f, 1.0f), // glow color
+		0.4f,                             // glow threshold
+		4.0f                              // glow intensity
+	);
 	m_SunModel.Render(context);
 
+	m_BasicShaderPair.EnableShader(context);
+	m_BasicShaderPair.SetShaderParameters(context, &planetsWorld, &m_view, &m_projection, &m_Light, m_textureSun.Get(), true);
 	if (m_planetarySystem)
 	{
 		m_planetarySystem->Render(
@@ -448,11 +455,6 @@ void Game::Render()
 			m_PlanetModel,
 			m_PlanetHaloModel);
 	}
-
-	//draw planet halo
-	/*DirectX::XMFLOAT4 planetHaloColor(1.0f, 1.0f, 1.0f, 0.15f);
-	m_BasicShaderPair.SetShaderParameters(context, &m_world, &m_view, &m_projection, &m_Light, nullptr, false, planetHaloColor);
-	m_PlanetHaloModel.Render(context);*/
 
 	//render our GUI
 	ImGui::Render();
@@ -579,6 +581,7 @@ void Game::CreateDeviceDependentResources()
 
 	//load and set up our Vertex and Pixel Shaders
 	m_BasicShaderPair.InitStandard(device, L"light_vs.cso", L"light_ps.cso");
+	m_GlowShaderPair.InitGlowShader(device, L"glow_vs.cso", L"glow_ps.cso");
 
 	//load Textures
 	CreateDDSTextureFromFile(device, L"Material.001_Base_color.dds", nullptr, m_texture1.ReleaseAndGetAddressOf());

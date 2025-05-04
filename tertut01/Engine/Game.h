@@ -185,6 +185,7 @@ private:
 
     //Shaders
     Shader																	m_BasicShaderPair;
+	Shader																	m_GlowShaderPair;
 
     //Scene. 
     ModelClass																m_BasicModel;
@@ -245,12 +246,5 @@ private:
 	//std::unique_ptr<Planet>                                                 m_planet;
 	std::unique_ptr<PlanetarySystem>                                        m_planetarySystem;
 
-	//float 																    m_orbitRadius = 10.0f;
- //   float                                                                   m_ellipseA = 105.0f; // semi-major axis (X)
-	//float                                                                   m_ellipseB = 100.0f; // semi-minor axis (Z)
-	//float 																    m_orbitSpeed = 0.1f; // Radians per second
-	//float 																    m_orbitAngle = 0.0f; // Current angle in orbit
-	//float                                                                   m_planetSpinAngle = 0.0f; // Current angle of planet spin
-	//float 																    m_planetSpinSpeed = 0.3f; // Radians per second
-	DirectX::SimpleMath::Vector3 											m_orbitCenter;
+    DirectX::SimpleMath::Vector3 											m_orbitCenter;
 };
