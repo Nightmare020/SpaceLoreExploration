@@ -22,6 +22,7 @@ Spaceship::Spaceship(const DirectX::SimpleMath::Vector3& pos)
 
 void Spaceship::ApplyThrust(float force)
 {
+	force = thrustForce; // Use the thrust force defined in the class
 	btVector3 thrustDirection = m_rigidBody->getWorldTransform().getBasis() *
 		btVector3(0, 0, 1); // Forward direction
 	m_rigidBody->applyCentralForce(thrustDirection * force);
@@ -29,6 +30,7 @@ void Spaceship::ApplyThrust(float force)
 
 void Spaceship::ApplyRotation(float torque)
 {
+	torque = rotationSpeed; // Use the rotation speed defined in the class
 	btVector3 torqueVec(0, torque, 0); // Y-axis rotation
 	m_rigidBody->applyTorque(torqueVec);
 

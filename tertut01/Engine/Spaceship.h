@@ -13,5 +13,8 @@ public:
 
 	DirectX::SimpleMath::Vector3 GetPosition() const;
 	float GetRotation() const;
+
+	float thrustForce = 30.0f;     // Default thrust
+	float rotationSpeed = 25.0f;   // Degrees/sec or similar scale
 };
 

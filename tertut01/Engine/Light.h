@@ -44,6 +44,13 @@ public:
 	float getSpecularPower();								///< Get specular power, returns float
 	DirectX::SimpleMath::Vector3 getPosition();				///< Get light position, returns float3
 
+	// Direct access for ImGui tweaking
+	DirectX::SimpleMath::Vector4& AmbientColor() { return m_ambientColour; }
+	DirectX::SimpleMath::Vector4& DiffuseColor() { return m_diffuseColour; }
+	DirectX::SimpleMath::Vector4& SpecularColor() { return m_specularColour; }
+	DirectX::SimpleMath::Vector3& Position() { return m_position; }
+	DirectX::SimpleMath::Vector3& Direction() { return m_direction; }
+	float& SpecularPower() { return m_specularPower; }
 
 protected:
 	DirectX::SimpleMath::Vector4 m_ambientColour;

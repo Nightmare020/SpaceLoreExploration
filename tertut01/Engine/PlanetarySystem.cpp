@@ -24,8 +24,8 @@ void PlanetarySystem::Update(float deltaTime, const DirectX::SimpleMath::Vector3
 
 	for (auto& [index, orbitingPlanet] : m_Planets)
 	{
-		orbitingPlanet.orbitAngle += orbitingPlanet.orbitSpeed * deltaTime;
-		orbitingPlanet.spinAngle += orbitingPlanet.spinSpeed * deltaTime;
+		orbitingPlanet.orbitAngle += orbitingPlanet.orbitSpeed * orbitSpeed * deltaTime;
+		orbitingPlanet.spinAngle += orbitingPlanet.spinSpeed * rotationSpeed * deltaTime;
 		if (orbitingPlanet.spinAngle > XM_2PI)
 		{
 			orbitingPlanet.spinAngle -= XM_2PI;

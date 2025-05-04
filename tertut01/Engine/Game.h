@@ -243,8 +243,10 @@ private:
 	std::unique_ptr<Planet>                                                 m_sun;
 
     std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>           m_allPlanetTextures;
-	//std::unique_ptr<Planet>                                                 m_planet;
 	std::unique_ptr<PlanetarySystem>                                        m_planetarySystem;
 
     DirectX::SimpleMath::Vector3 											m_orbitCenter;
+    DirectX::XMFLOAT4 m_glowColor;
+    float m_glowThreshold;
+    float m_glowIntensity;
 };

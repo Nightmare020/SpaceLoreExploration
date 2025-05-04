@@ -23,6 +23,9 @@ public:
 	void Render(ID3D11DeviceContext* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection, Light light,
 		Shader& shader, ModelClass& planetModel, ModelClass& haloModel);
 
+	float orbitSpeed = 1.0f;    // Global orbit multiplier
+	float rotationSpeed = 1.0f; // Global spin multiplier
+
 private:
 	struct OrbitingPlanet
 	{

@@ -436,10 +436,7 @@ void Game::Render()
 	//draw sun
 	m_GlowShaderPair.EnableShader(context);
 	m_GlowShaderPair.SetGlowShaderParameters(context, &planetsWorld, &m_view, &m_projection, m_textureSun.Get(),
-		XMFLOAT4(1.3f, 1.0f, 0.6f, 1.0f), // glow color
-		0.4f,                             // glow threshold
-		4.0f                              // glow intensity
-	);
+		m_glowColor, m_glowThreshold, m_glowIntensity);
 	m_SunModel.Render(context);
 
 	m_BasicShaderPair.EnableShader(context);
@@ -775,7 +772,54 @@ void Game::SetupGUI()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("Planetary System Parameters");
+	if (ImGui::Begin("Planetary System Parameters"))
+	{
+		static float glowThreshold = 0.4f;
+		static float glowIntensity = 4.0f;
+		static DirectX::XMFLOAT4 glowColor = XMFLOAT4(1.0f, 0.035f, 0.035f, 1.0f);
+
+		ImGui::Text("Glow Shader Settings:");
+		ImGui::ColorEdit4("Glow Color", reinterpret_cast<float*>(&glowColor));
+		ImGui::SliderFloat("Glow Threshold", &glowThreshold, 0.0f, 1.0f);
+		ImGui::SliderFloat("Glow Intensity", &glowIntensity, 0.0f, 10.0f);
+
+		// Store these in Game class if you want them applied outside GUI
+		m_glowThreshold = glowThreshold;
+		m_glowIntensity = glowIntensity;
+		m_glowColor = glowColor;
+
+		ImGui::Separator();
+
+		ImGui::Text("Light Settings:");
+		ImGui::ColorEdit4("Ambient", reinterpret_cast<float*>(&m_Light.AmbientColor()));
+		ImGui::ColorEdit4("Diffuse", reinterpret_cast<float*>(&m_Light.DiffuseColor()));
+		ImGui::ColorEdit4("Specular", reinterpret_cast<float*>(&m_Light.SpecularColor()));
+		ImGui::SliderFloat("Specular Power", &m_Light.SpecularPower(), 0.0f, 64.0f);
+		ImGui::SliderFloat3("Light Pos", reinterpret_cast<float*>(&m_Light.Position()), -100.0f, 100.0f);
+		ImGui::SliderFloat3("Light Dir", reinterpret_cast<float*>(&m_Light.Direction()), -1.0f, 1.0f);
+
+		ImGui::Separator();
+
+		ImGui::Text("Spaceship Controls:");
+		ImGui::SliderFloat("Thrust Force", &m_spaceship->thrustForce, 0.0f, 100.0f);
+		ImGui::SliderFloat("Rotation Speed", &m_spaceship->rotationSpeed, 0.0f, 50.0f);
+
+		ImGui::Separator();
+
+		ImGui::Text("Planetary System:");
+		ImGui::SliderFloat("Planet Orbit Speed", &m_planetarySystem->orbitSpeed, 0.0f, 10.0f);
+		ImGui::SliderFloat("Planet Rotation Speed", &m_planetarySystem->rotationSpeed, 0.0f, 10.0f);
+
+		ImGui::Separator();
+
+		ImGui::Text("Camera:");
+		Vector3 pos = m_Camera01.getPosition();
+		if (ImGui::SliderFloat3("Camera Position", reinterpret_cast<float*>(&pos), -100.0f, 100.0f))
+			m_Camera01.setPosition(pos);
+		Vector3 rot = m_Camera01.getRotation();
+		if (ImGui::SliderFloat3("Camera Rotation", reinterpret_cast<float*>(&rot), -180.0f, 180.0f))
+			m_Camera01.setRotation(rot);
+	}
 
 	ImGui::End();
 }
