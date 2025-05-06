@@ -120,9 +120,7 @@ void PlanetarySystem::TryGeneratePlanet(int index)
     // Generate the planet's 3D model with procedural terrain.
     std::unique_ptr<ModelClass> planetModel = std::make_unique<ModelClass>();
     siv::PerlinNoise noise(GetRandomInt(0, 999999));
-    float amplitude = 5.5f;
-    float frequency = 3.0f;
-    planetModel->LoadPlanetModel(m_Device, "Planet.obj", noise, amplitude, frequency);
+    planetModel->LoadPlanetModel(m_Device, "Planet.obj", noise, m_noiseAmplitude, m_noiseFrequency);
 
     // Create and store the orbiting planet.
     OrbitingPlanet orbitingPlanet;

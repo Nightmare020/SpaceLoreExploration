@@ -74,10 +74,14 @@
     <ClInclude Include="PhysicsObject.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Spaceship.h" />
-    <ClInclude Include="Planet.h" />
     <ClInclude Include="PlanetarySystem.h">
       <Filter>Procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="Spaceship.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -121,13 +125,17 @@
     <ClCompile Include="imgui_impl_win32.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
+    <ClCompile Include="PlanetarySystem.cpp">
+      <Filter>Procedural</Filter>
+    </ClCompile>
     <ClCompile Include="PhysicsObject.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Spaceship.cpp" />
-    <ClCompile Include="Planet.cpp" />
-    <ClCompile Include="PlanetarySystem.cpp">
-      <Filter>Procedural</Filter>
+    <ClCompile Include="Spaceship.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,12 +158,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="colour_ps.hlsl">
-      <Filter>Assets</Filter>
-    </FxCompile>
-    <FxCompile Include="colour_vs.hlsl">
-      <Filter>Assets</Filter>
-    </FxCompile>
     <FxCompile Include="light_ps.hlsl">
       <Filter>Assets</Filter>
     </FxCompile>

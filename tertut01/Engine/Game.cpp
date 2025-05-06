@@ -185,7 +185,8 @@ void Game::Update(DX::StepTimer const& timer)
 		if (m_gameInputCommands.left)
 		{
 			Vector3 position = m_Camera01.getPosition();
-			position += m_Camera01.getRight() * m_Camera01.getMoveSpeed();
+			float dt = static_cast<float>(timer.GetElapsedSeconds());
+			position += m_Camera01.getRight() * m_Camera01.getMoveSpeed() * dt;
 			m_Camera01.setPosition(position);
 		}
 		if (m_gameInputCommands.right)
@@ -804,6 +805,8 @@ void Game::SetupGUI()
 		ImGui::Text("Planetary System:");
 		ImGui::SliderFloat("Planet Orbit Speed", &m_planetarySystem->orbitSpeed, 0.0f, 10.0f);
 		ImGui::SliderFloat("Planet Rotation Speed", &m_planetarySystem->rotationSpeed, 0.0f, 10.0f);
+		ImGui::SliderFloat("Noise Amplitude", &m_planetarySystem->m_noiseAmplitude, 0.0f, 10.0f);
+		ImGui::SliderFloat("Noise Frequency", &m_planetarySystem->m_noiseFrequency, 0.1f, 10.0f);
 
 		ImGui::Separator();
 

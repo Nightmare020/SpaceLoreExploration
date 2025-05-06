@@ -46,6 +46,9 @@ public:
     float orbitSpeed = 1.0f;    ///< Multiplier for orbit speed of all planets.
     float rotationSpeed = 1.0f; ///< Multiplier for rotation speed of all planets.
 
+    float m_noiseAmplitude = 5.5f;
+    float m_noiseFrequency = 3.0f;
+
 private:
     /// Represents a single orbiting planet in the system.
     struct OrbitingPlanet
